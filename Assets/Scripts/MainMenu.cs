@@ -79,7 +79,7 @@ public class MainMenu : MonoBehaviour
     public void GameContinue()
     {
         src.PlayOneShot(click);
-        //animace fade out
+        //transition animace fade out
         SceneManager.LoadScene(PlayerPrefs.GetString("Level"));
     }
 
