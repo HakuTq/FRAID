@@ -17,8 +17,6 @@ public class MainMenu : MonoBehaviour
     public AudioSource src;
     public AudioClip click;
 
-    public Animator transition;
-
     public GameObject panel;
 
     public Button newGameButton;
@@ -73,7 +71,7 @@ public class MainMenu : MonoBehaviour
         PlayerPrefs.SetInt("HasASavedGame", 1);
         PlayerPrefs.Save();
         //transition animace fade out
-        SceneManager.LoadScene("Level1"); //zatim level1, uvidime jak se to bude jmenovat pozdìjc
+        SceneManager.LoadScene("TestingScene"); //zatim level1, uvidime jak se to bude jmenovat pozdìjc
     }
 
     public void GameContinue()
