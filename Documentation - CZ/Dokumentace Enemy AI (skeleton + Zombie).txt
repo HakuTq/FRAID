@@ -1,0 +1,11 @@
+Skeleton: Pomoci enum má skeleton 4 fáze:
+*Všechno je zatím bez timerů
+Idle - Stojí na místě/přebijí luk
+Patrol - Přechází mezi 2 body (bodA je nalevo a bodB je napravo), body jsou v Unity vyznačené pomocí Gizmos (prázdný kruh s volitelnou průměrem) a čárou propojujícími je. Když se hrát přiblíží moc blízko enemákovi, přejde do Chase fáze. Jestli je Patrol aktivována když je enemy mimo svojí patrol část, vrátí se zpátky
+Chase - Pronásleduje hráče, Jestli se enemy dostane dostatečně blízko ke hráči, zaútočí vystřelením šípu (fáze Attack), jestli ne, pronásleduje hráče
+Attack - Zastaví se a zaútočí na hráče, přepne se na fázi Idle, dokud není připraven znova útočit {zatím nemám jiné využití pro Idle fázi, takže jsem to použil jako "meziútočnou" fázi}
+
+Zombie: Narozdíl od Skeletona má Chase a Attack fázi spojenou
+Idle - Stojí na místě
+Patrol - Stejná jako u skeletona
+ChaseAttack - Pronásleduje hráče dokud není dostatečně blízko zaútočit, útok je proveden za běhu, při a po útoku je na chvíli zpomalen, dokud není připraven dalšího útoku

@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour
+public class ZombieEmemy : MonoBehaviour
 {
     //[SerializeField] Player Player; --PlayerScript
-    [SerializeField] float speedOfWalking;
     [SerializeField] float maxHealth;
     [SerializeField] float nextAttackTime;
+    private bool attacked;
 
     Rigidbody2D rb;
     SpriteRenderer sprite;
@@ -19,6 +19,11 @@ public class NewBehaviourScript : MonoBehaviour
     public bool ReadyToFire
     {
         get { return readyToAttack; }
+    }
+
+    public bool Attacked
+    {
+        get { return attacked; }
     }
 
     void Start()
@@ -42,34 +47,10 @@ public class NewBehaviourScript : MonoBehaviour
         }
     }
 
-    public void StartWalking(bool walkLeft)
-    {
-        //animations
-        if (walkLeft) rb.velocity = Vector2.left * speedOfWalking;
-        else rb.velocity = Vector2.right * speedOfWalking;
-    }
-
-    public void StopWalking()
-    {
-        rb.velocity = Vector2.zero;
-    }
-
-    public void Turn(bool turnLeft)
-    {
-        if (turnLeft) sprite.flipX = true;
-        else sprite.flipX = false;
-    }
-
     public void Attack()
     {        
         readyToAttack = false;
     }
-
-    //public void DistanceBetweenEnemyAndPlayerX(out float x, out float y)
-    //{
-    //    x = Math.Abs(PlayerPositionX - transform.position.x);
-    //    y = Math.Abs(PlayerPositionY - transform.position.y);
-    //}
 
     private void EnemyDeath()
     {
