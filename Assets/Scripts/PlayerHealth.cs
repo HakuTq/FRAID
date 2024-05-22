@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
+    //SCRIPTS
+    [SerializeField] UI_PlayerHealth ui_PlayerHealth;
+    //SCRIPTS
     [SerializeField] private float health;
     [SerializeField] private float maxHealth;
     [SerializeField] private float invincibilityTime;
@@ -16,7 +19,8 @@ public class PlayerHealth : MonoBehaviour
     {
         get { return health; }
         set 
-        {            
+        {
+            ui_PlayerHealth.SetHealthUI();
             if (value > maxHealth) health = maxHealth; //Životy nemùžou pøekroèit maximální životy
             else health = value;
         }
@@ -50,11 +54,32 @@ public class PlayerHealth : MonoBehaviour
         invincible = true;
         timerInvincibility = invincibilityTime;
     }
-
+    /// <summary>
+    /// Can turn off invincibility and the number of the damage
+    /// </summary>
+    /// <param name="setInvincibility"></param>
+    /// <param name="damage"></param>
     public void PlayerDamage(bool setInvincibility, float damage)
     {
         if (!invincible && !godMode) health -= damage;
         if (setInvincibility) PlayerSetInvincible();
+    }
+    /// <summary>
+    /// Damage is 1, can turn off invincibility
+    /// </summary>
+    /// <param name="setInvincibility"></param>
+    public void PlayerDamage(bool setInvincibility)
+    {
+        if (!invincible && !godMode) health -= 1;
+        if (setInvincibility) PlayerSetInvincible();
+    }
+    /// <summary>
+    /// Damage is 1, invincibility is turned on
+    /// </summary>
+    public void PlayerDamage()
+    {
+        if (!invincible && !godMode) health -= 1;
+        PlayerSetInvincible();
     }
 
     public void PlayerMaxHealth()
