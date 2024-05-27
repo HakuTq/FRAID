@@ -33,13 +33,11 @@ public class PlayerMovementScript : MonoBehaviour
         {
             moveVector.x = -1;
             shouldMove = true;
-            shouldJump = false;
         }
-        else if (context.canceled)
+        else if (context.canceled && moveVector.x == -1)
         {
             moveVector.x = 0;
             shouldMove = false;
-            shouldJump = false;
         }
     }
 
@@ -50,13 +48,11 @@ public class PlayerMovementScript : MonoBehaviour
         {
             moveVector.x = 1;
             shouldMove = true;
-            shouldJump = false;
         }
-        else if (context.canceled)
+        else if (context.canceled && moveVector.x == 1)
         {
             moveVector.x = 0;
             shouldMove = false;
-            shouldJump = false;
         }
     }
 
@@ -67,13 +63,11 @@ public class PlayerMovementScript : MonoBehaviour
         {
             // Set moveVector.y to 1 when the action is started (jumping up)
             moveVector.y = 1;
-            shouldMove = false;
             shouldJump = true;
         }
         else if (context.canceled)
         {
             moveVector.y = 0;
-            shouldMove = false;
             shouldJump = false;
         }
     }

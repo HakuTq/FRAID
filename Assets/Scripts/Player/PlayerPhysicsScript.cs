@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class PlayerPhysicsScript : MonoBehaviour
@@ -6,32 +7,57 @@ public class PlayerPhysicsScript : MonoBehaviour
     //***** References *****
     private PlayerMovementScript movementScript;
     private Rigidbody2D rb;
+    private Collider2D feet;
     //***** Movement speeds *****
-    private int movementSpeed = 5;
-    private int jumpHeight = 10;
+    private int movementSpeedAir = 3;
+    private int movementSpeedGround = 5;
+    private int jumpHeight = 5;
+    //***** States *****
+    private bool isTouchingGround
+    {
+        get
+        {
+            return feet.IsTouchingLayers(LayerMask.GetMask("Ground"));
+        }
+    }
     //********** PUBLIC **********
+    public bool IsTouchingGround
+    {
+        get { return isTouchingGround; }
+    }
+
     private void Awake()
     {
         movementScript = FindObjectOfType<PlayerMovementScript>();
-        rb = FindObjectOfType<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
+        feet = GetComponentsInChildren<Collider2D>().FirstOrDefault(x => x.name == "Feet");
     }
 
     private void FixedUpdate()
     {
-        if (rb.velocity.y == 0)
+        Vector2 movementVector = rb.velocity;
+        if (isTouchingGround)
         {
             if (movementScript.ShouldMove)
             {
-                rb.velocity = movementScript.MoveVector * movementSpeed;
+                movementVector = movementScript.MoveVector * movementSpeedGround;
             }
             else if (movementScript.ShouldJump)
             {
-                rb.velocity = movementScript.MoveVector * jumpHeight;
+                movementVector.y = jumpHeight;
             }
             else
             {
-                rb.velocity = Vector2.zero;
+                movementVector = Vector2.zero;
             }
         }
+        else
+        {
+            if (movementScript.ShouldMove)
+            {
+                movementVector.x = movementScript.MoveVector.x * movementSpeedAir;
+            }
+        }
+        rb.velocity = movementVector;
     }
 }
