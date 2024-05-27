@@ -18,13 +18,20 @@ public class PlayerPhysicsScript : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (movementScript.ShouldMove)
+        if (rb.velocity.y == 0)
         {
-            rb.velocity = movementScript.MoveVector * movementSpeed;
-        }
-        else if(movementScript.ShouldJump)
-        {
-            rb.velocity = movementScript.MoveVector * jumpHeight;
+            if (movementScript.ShouldMove)
+            {
+                rb.velocity = movementScript.MoveVector * movementSpeed;
+            }
+            else if (movementScript.ShouldJump)
+            {
+                rb.velocity = movementScript.MoveVector * jumpHeight;
+            }
+            else
+            {
+                rb.velocity = Vector2.zero;
+            }
         }
     }
 }
