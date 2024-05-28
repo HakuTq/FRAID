@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -7,55 +8,101 @@ public class PlayerPhysicsScript : MonoBehaviour
     //***** References *****
     private PlayerMovementScript movementScript;
     private Rigidbody2D rb;
-    private Collider2D feet;
+    private Collider2D left;
+    private Collider2D down;
+    private Collider2D right;
     //***** Movement speeds *****
-    private int movementSpeedAir = 3;
-    private int movementSpeedGround = 5;
-    private int jumpHeight = 5;
+    [Header("Movement Speeds")]
+    [SerializeField] private int movementSpeedAir;
+    [SerializeField] private int movementSpeedGround;
+    [SerializeField] private int jumpHeight;
+    //***** Layers *****
+    LayerMask groundLayer;
     //***** States *****
-    private bool isTouchingGround
+    private bool isTouchingGroundDown
     {
         get
         {
-            return feet.IsTouchingLayers(LayerMask.GetMask("Ground"));
+            return down.IsTouchingLayers(groundLayer);
+        }
+    }
+    private bool isTouchingGroundLeft
+    {
+        get
+        {
+            return left.IsTouchingLayers(groundLayer);
+        }
+    }
+    private bool isTouchingGroundRight
+    {
+        get
+        {
+            return right.IsTouchingLayers(groundLayer);
         }
     }
     //********** PUBLIC **********
-    public bool IsTouchingGround
+    public bool IsTouchingGroundDown
     {
-        get { return isTouchingGround; }
+        get { return isTouchingGroundDown; }
+    }
+    public bool IsTouchingGroundLeft
+    {
+        get { return isTouchingGroundLeft; }
+    }
+    public bool IsTouchingGroundRight
+    {
+        get { return isTouchingGroundRight; }
     }
 
     private void Awake()
     {
+        groundLayer = LayerMask.GetMask("Ground");
         movementScript = FindObjectOfType<PlayerMovementScript>();
         rb = GetComponent<Rigidbody2D>();
-        feet = GetComponentsInChildren<Collider2D>().FirstOrDefault(x => x.name == "Feet");
+        List<Collider2D> collidersInChildren = GetComponentsInChildren<Collider2D>().ToList();
+        foreach (Collider2D collider in collidersInChildren)
+        {
+            switch (collider.name)
+            {
+                case "Down":
+                    {
+                        down = collider; break;
+                    }
+                case "Left":
+                    {
+                        left = collider; break;
+                    }
+                case "Right":
+                    {
+                        right = collider; break;
+                    }
+            }
+        }
     }
 
     private void FixedUpdate()
     {
         Vector2 movementVector = rb.velocity;
-        if (isTouchingGround)
+        if (isTouchingGroundDown)
         {
             if (movementScript.ShouldMove)
             {
-                movementVector = movementScript.MoveVector * movementSpeedGround;
+                movementVector.x = (movementScript.MoveVector * movementSpeedGround * Time.deltaTime).x;
             }
-            else if (movementScript.ShouldJump)
+            if (movementScript.ShouldJump)
             {
-                movementVector.y = jumpHeight;
+                movementVector.y = (movementScript.MoveVector * jumpHeight * Time.deltaTime).y;
             }
-            else
+            if (!movementScript.ShouldMove && !movementScript.ShouldJump)
             {
                 movementVector = Vector2.zero;
             }
         }
         else
         {
-            if (movementScript.ShouldMove)
+            if (movementScript.ShouldMove && !(isTouchingGroundLeft || isTouchingGroundRight))
             {
-                movementVector.x = movementScript.MoveVector.x * movementSpeedAir;
+                movementVector.x = (movementScript.MoveVector * movementSpeedAir * Time.deltaTime).x;
             }
         }
         rb.velocity = movementVector;
