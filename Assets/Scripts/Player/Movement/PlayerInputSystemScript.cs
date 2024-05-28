@@ -81,7 +81,7 @@ public partial class @PlayerMovement: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""4c1e8ad4-d93d-40e2-901f-2806eb1d2be4"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
