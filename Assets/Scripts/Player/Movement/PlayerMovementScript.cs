@@ -10,12 +10,14 @@ public class PlayerMovementScript : MonoBehaviour
     private Vector2 moveVector;
     private bool shouldMove;
     private bool shouldJump;
+    [SerializeField] private PlayerInput playerInput = null;
 
     //********** PUBLIC **********
 
     public Vector2 MoveVector { get { return moveVector; } }
     public bool ShouldMove { get { return shouldMove;} }
     public bool ShouldJump { get { return shouldJump;} }
+    public PlayerInput PlayerInput => playerInput;
 
     // Awake is called when the script instance is being loaded
     private void Awake()

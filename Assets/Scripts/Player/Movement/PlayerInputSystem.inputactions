@@ -1,5 +1,5 @@
 {
-    "name": "Player",
+    "name": "PlayerInputSystem",
     "maps": [
         {
             "name": "Movement",
@@ -68,6 +68,12 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Menu",
+            "id": "bb08bddc-433f-4d7c-9c59-d379b421bc86",
+            "actions": [],
+            "bindings": []
         }
     ],
     "controlSchemes": []
