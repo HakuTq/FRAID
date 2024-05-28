@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -5,6 +7,7 @@ public class PlayerInputRebind : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private PlayerMovementScript playerController = null;
+
     [Header("Actions")]
     [SerializeField] private InputActionReference jumpAction = null;
     [SerializeField] private InputActionReference walkLAction = null;
@@ -12,47 +15,24 @@ public class PlayerInputRebind : MonoBehaviour
 
     private void Update()
     {
-        if (Keyboard.current.kKey.wasPressedThisFrame)
+        if(Keyboard.current.kKey.wasPressedThisFrame)
         {
-            RebindJump("upArrow");
-            RebindWalkL("leftArrow");
-            RebindWalkR("rightArrow");
+            RebindAction(walkRAction, "rightArrow");
+            RebindAction(walkLAction, "leftArrow");
+            RebindAction(jumpAction, "upArrow");
         }
     }
 
-    public void RebindJump(string inputCode)
+
+    private void RebindAction(InputActionReference actionReference, string inputCode)
     {
         playerController.PlayerInput.SwitchCurrentActionMap("Menu");
 
-        // Remove previous binding for jump action
-        jumpAction.action.RemoveAllBindingOverrides();
+        // Remove previous binding for the action
+        actionReference.action.RemoveAllBindingOverrides();
 
         // Add new binding
-        jumpAction.action.ApplyBindingOverride("<Keyboard>/" + inputCode);
-
-        playerController.PlayerInput.SwitchCurrentActionMap("Movement");
-    }
-    public void RebindWalkL(string inputCode)
-    {
-        playerController.PlayerInput.SwitchCurrentActionMap("Menu");
-
-        // Remove previous binding for jump action
-        walkLAction.action.RemoveAllBindingOverrides();
-
-        // Add new binding
-        walkLAction.action.ApplyBindingOverride("<Keyboard>/" + inputCode);
-
-        playerController.PlayerInput.SwitchCurrentActionMap("Movement");
-    }
-    public void RebindWalkR(string inputCode)
-    {
-        playerController.PlayerInput.SwitchCurrentActionMap("Menu");
-
-        // Remove previous binding for jump action
-        walkRAction.action.RemoveAllBindingOverrides();
-
-        // Add new binding
-        walkRAction.action.ApplyBindingOverride("<Keyboard>/" + inputCode);
+        actionReference.action.ApplyBindingOverride("<Keyboard>/" + inputCode);
 
         playerController.PlayerInput.SwitchCurrentActionMap("Movement");
     }
