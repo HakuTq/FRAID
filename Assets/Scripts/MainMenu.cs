@@ -8,8 +8,6 @@ using static System.Net.Mime.MediaTypeNames;
 
 public class MainMenu : MonoBehaviour
 {
-    Settings settings;
-
     [SerializeField] private AudioMixer audioMixer;
     [SerializeField] GameObject mainMenuBackground;
     [SerializeField] GameObject settingsMenu;
@@ -55,12 +53,12 @@ public class MainMenu : MonoBehaviour
         }
         if (PlayerPrefs.HasKey("MusicVolume"))
         {
-            settings.SetMusicVolume();
+            SetMusicVolume();
         }
 
         if (PlayerPrefs.HasKey("SFXvolume"))
         {
-            settings.SetSFXVolume();
+            SetSFXVolume();
         }
     }
 
@@ -109,5 +107,22 @@ public class MainMenu : MonoBehaviour
     {
         PlayerPrefs.DeleteKey("Level");
         //tady toho bude urèitì víc, èasem
+    }
+
+    public void SetMusicVolume()
+    {
+        float volume = PlayerPrefs.GetFloat("MusicVolume");
+        Debug.Log("Music: " + volume);
+        audioMixer.SetFloat("Music", Mathf.Log10(volume) * 20);
+        PlayerPrefs.SetFloat("MusicVolume", volume);
+    }
+
+
+    public void SetSFXVolume()
+    {
+        float volume = PlayerPrefs.GetFloat("SFXvolume");
+        Debug.Log("SFX: " + volume);
+        audioMixer.SetFloat("SFX", Mathf.Log10(volume) * 20);
+        PlayerPrefs.SetFloat("SFXvolume", volume);
     }
 }
