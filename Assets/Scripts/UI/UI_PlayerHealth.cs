@@ -6,8 +6,10 @@ using UnityEngine.UI;
 public class UI_PlayerHealth : MonoBehaviour
 {
     [SerializeField] PlayerHealth health;
+    [SerializeField] AbilityMeterScript abilityMeterScript;
     [SerializeField] GameObject[] healthImage;
     [SerializeField] GameObject[] emptyHealthImage;
+    [SerializeField] Slider abilitySlider;
 
     private void Start()
     {
@@ -61,5 +63,21 @@ public class UI_PlayerHealth : MonoBehaviour
     {
         foreach (GameObject image in healthImage) image.SetActive(false);
         foreach (GameObject emptyImage in emptyHealthImage) emptyImage.SetActive(false);
+    }
+
+    public void UpdateAbilityBar(float value)
+    {
+        abilitySlider.value = value;
+    }
+
+    public void UpdateAbilityBar(float value, float max)
+    {
+        abilitySlider.value = value;
+        abilitySlider.maxValue = max;
+    }
+
+    public void UpdateAbilityBarMax(float max)
+    {
+        abilitySlider.maxValue = max;
     }
 }

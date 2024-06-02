@@ -8,12 +8,17 @@ public class AbilityMeterScript : MonoBehaviour
     [SerializeField] private float maxAbilityMeter;
     [SerializeField] private float startingAbilityMeter;
     [SerializeField] private bool abilityReady;
+    [SerializeField] UI_PlayerHealth ui;
     private float abilityMeter = 0;
 
     public float MaxAbilityMeter
     {
         get { return maxAbilityMeter; }
-        set { maxAbilityMeter = value; }
+        set 
+        { 
+            maxAbilityMeter = value;
+            ui.UpdateAbilityBarMax(value);
+        }
     }
 
     public float AbilityMeter
@@ -21,8 +26,16 @@ public class AbilityMeterScript : MonoBehaviour
         get { return abilityMeter; }
         set
         {
-            if (value > maxAbilityMeter) abilityMeter = MaxAbilityMeter; //nemùže pøekroèit maximum
-            else abilityMeter = value;
+            if (value > maxAbilityMeter)
+            {
+                abilityMeter = MaxAbilityMeter; //nemùže pøekroèit maximum
+                ui.UpdateAbilityBar(MaxAbilityMeter);
+            }
+            else
+            {
+                abilityMeter = value;
+                ui.UpdateAbilityBar(value);
+            }
         }
     }
 
