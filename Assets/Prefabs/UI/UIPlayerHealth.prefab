@@ -590,6 +590,7 @@ GameObject:
   - component: {fileID: 5200333109233373287}
   - component: {fileID: 923902149304149475}
   - component: {fileID: 728480906967183690}
+  - component: {fileID: 4648683369763741344}
   m_Layer: 5
   m_Name: UIPlayerHealth
   m_TagString: Untagged
@@ -681,6 +682,31 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &4648683369763741344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5370941716966121085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fb8d5ce6d2e42c48997b725d52a50be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: {fileID: 0}
+  abilityMeterScript: {fileID: 0}
+  healthImage:
+  - {fileID: 3442257438420127627}
+  - {fileID: 1302434143014355402}
+  - {fileID: 136036903835986858}
+  - {fileID: 4173630201858493350}
+  emptyHealthImage:
+  - {fileID: 7258822411682463458}
+  - {fileID: 1815026875214314936}
+  - {fileID: 4402651968741929289}
+  - {fileID: 8946348703724379791}
+  abilitySlider: {fileID: 1221620865105114819}
 --- !u!1 &5916459860968375026
 GameObject:
   m_ObjectHideFlags: 0
@@ -929,7 +955,6 @@ GameObject:
   - component: {fileID: 7826865551044330923}
   - component: {fileID: 8321112262873147654}
   - component: {fileID: 924240458847290336}
-  - component: {fileID: 5459206448606495856}
   - component: {fileID: 6091979160769768375}
   m_Layer: 5
   m_Name: Base
@@ -1003,31 +1028,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &5459206448606495856
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8039723052505712179}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6fb8d5ce6d2e42c48997b725d52a50be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: {fileID: 0}
-  abilityMeterScript: {fileID: 0}
-  healthImage:
-  - {fileID: 3442257438420127627}
-  - {fileID: 1302434143014355402}
-  - {fileID: 136036903835986858}
-  - {fileID: 4173630201858493350}
-  emptyHealthImage:
-  - {fileID: 7258822411682463458}
-  - {fileID: 1815026875214314936}
-  - {fileID: 4402651968741929289}
-  - {fileID: 8946348703724379791}
-  abilitySlider: {fileID: 0}
 --- !u!225 &6091979160769768375
 CanvasGroup:
   m_ObjectHideFlags: 0

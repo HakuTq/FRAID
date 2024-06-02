@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
-    //SCRIPTS
+    [Header("Scripts")]
     [SerializeField] UI_PlayerHealth ui_PlayerHealth;
-    //SCRIPTS
+    [Header("Hodnoty")]
     [SerializeField] private float health;
     [SerializeField] private float maxHealth;
     [SerializeField] private float invincibilityTime;
-    private float timerInvincibility;
+    [SerializeField] private float timerInvincibility;
     [SerializeField] private bool invincible; //nastavuje se pøes metodu
     [SerializeField] private bool godMode; //nevztahuje se na nìj èasovaè
     private bool isDead = false;
@@ -85,6 +85,11 @@ public class PlayerHealth : MonoBehaviour
     public void PlayerMaxHealth()
     {
         Health = MaxHealth;
+    }
+
+    public void PlayerHeal()
+    {
+        Health += 1;
     }
 
     private void Update()

@@ -1,0 +1,14 @@
+**ŽIVOTY
+-Životy jsou v základu dány na 3HP, ale můžou být zvětšeny pomocí floatu "MaxHealth". Při přidávání HP pomocí "Health", nemůže celkový počet přejít přes MaxHealth, proto při překročení bude maximální hodnota.
+-Hráč nedostane poškození, jestli má zapnutý godMode (nastavení pomocí "GodMode" v "PlayerHealth" scriptu)
+-Metoda "PlayerMaxHealth" vyhealuje hráče na max; Metoda "PlayerHeal" o 1HP
+-Atribut IsDead se dá pouze číst, když hráč zemře, dá se atribut na true
+**UI
+-UI je řízeno při změně hodnoty "Health" funkcemi "ResetHealthUI" a "SetHealthUI"
+-Všechny UI prvky jsou řízeny scriptem "UI_PlayerHealth"
+**ABILITYMETER
+-Hráčovi životy jsou řízeny scriptem "PlayerHealth" a ability meter scriptem "AbilityMeter" (Oba používají UI_PlayerHealth)
+-Ability bar používá pro fungování funkce "UpdateAbilityBar" a "UpdateAbilityBarMax", který je použit v "AbilityMeter" a jako při PlayerHealth se mění při změně hodnoty. Dá se nastavit hodnota a max. Max funguje stejně jako u životů. Min nejde nastavit (vždy 0)
+**Doporučení**
+Ve scriptu "PlayerHealth" pro poškození hráče používat PlayerDamage, kde se automaticky dají Invincible Frames (0.5s v základu). Metoda má i přetížení, kde se pomocí boolu nastavuje jestli se zapne Invincible Frames nebo ne.
+  
