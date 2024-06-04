@@ -1,0 +1,7 @@
+-Config System funguje na 3 hlavních metodách "SaveConfig", "LoadConfig" a "CreateConfig" (private)
+-SaveConfig nahradí Config.txt novým, který si vezme všechny potřebné informace z Nastavení/Main Menu
+-LoadConfig si vezme z Config.txt datové info (info[0]) "music_volume" a pomocí separátoru '=' rozdělí datové info a data (info[1]), které pak zapíše do příslušného scriptu
+-CreateConfig vytvoří Config.txt, který je automaticky naplněn výchozími daty
+-V třídě je taky public metoda "ResetConfig", který smaže soubour a pomocí "CreateConfig" vytvoří náhradu
+-Pomocí IEnumerator "waiter" a "fileIsUsed" je zajištěno, že probíhá pouze jedna metoda najednou
+-Časovač ve "waiter" je nastaven na 1s a poté zkusí znova zavolat metodu

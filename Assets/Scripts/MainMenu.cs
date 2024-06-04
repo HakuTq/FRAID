@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Dependencies.NCalc;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
@@ -11,6 +12,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private AudioMixer audioMixer;
     [SerializeField] GameObject mainMenuBackground;
     [SerializeField] GameObject settingsMenu;
+    [SerializeField] ConfigSystem configSystem;
 
     public AudioSource src;
     public AudioClip click;
@@ -22,6 +24,34 @@ public class MainMenu : MonoBehaviour
 
     public bool PreGameCutscene = false;
     public bool isInSettings = false;
+
+    float musicVolume = 100f;
+    float sfxVolume = 100f;
+
+    public float MusicVolume
+    {
+        get { return musicVolume; }
+        set
+        {
+            if (value >= 0 && value <= 100)
+            {
+                musicVolume = value;
+                configSystem.SaveConfig();
+            }
+        }
+    }
+    public float SFXVolume
+    {
+        get { return sfxVolume; }
+        set
+        {
+            if (value >= 0 && value <= 100)
+            {
+                sfxVolume = value;
+                configSystem.SaveConfig();
+            }
+        }
+    }
 
     void Update()
     {
@@ -36,38 +66,14 @@ public class MainMenu : MonoBehaviour
 
     private void Start()
     {
-        SettingsLoad();
+        configSystem.LoadConfig();
         //tady bude animace transition (fade in)
         panel.SetActive(true);
-    }
-
-    private void SettingsLoad()
-    {
-        if (PlayerPrefs.HasKey("Level"))
-        {
-            continueButton.interactable = true;
-        }
-        else
-        {
-            continueButton.interactable = false;
-        }
-        if (PlayerPrefs.HasKey("MusicVolume"))
-        {
-            SetMusicVolume();
-        }
-
-        if (PlayerPrefs.HasKey("SFXvolume"))
-        {
-            SetSFXVolume();
-        }
     }
 
     public void NewGame()
     {
         src.PlayOneShot(click);
-        NewGameSaveReset();
-        PlayerPrefs.SetInt("HasASavedGame", 1);
-        PlayerPrefs.Save();
         //transition animace fade out
         SceneManager.LoadScene("TestingScene"); //zatim level1, uvidime jak se to bude jmenovat pozdìjc
     }
@@ -76,7 +82,6 @@ public class MainMenu : MonoBehaviour
     {
         src.PlayOneShot(click);
         //transition animace fade out
-        SceneManager.LoadScene(PlayerPrefs.GetString("Level"));
     }
 
     public void Settings()
@@ -105,24 +110,20 @@ public class MainMenu : MonoBehaviour
 
     public void NewGameSaveReset()
     {
-        PlayerPrefs.DeleteKey("Level");
-        //tady toho bude urèitì víc, èasem
     }
 
-    public void SetMusicVolume()
+    public void SetMusicVolume(float value)
     {
-        float volume = PlayerPrefs.GetFloat("MusicVolume");
-        Debug.Log("Music: " + volume);
-        audioMixer.SetFloat("Music", Mathf.Log10(volume) * 20);
-        PlayerPrefs.SetFloat("MusicVolume", volume);
+        MusicVolume = value;
+        Debug.Log("Music: " + MusicVolume);
+        audioMixer.SetFloat("Music", Mathf.Log10(MusicVolume) * 20);
     }
 
 
-    public void SetSFXVolume()
+    public void SetSFXVolume(float value)
     {
-        float volume = PlayerPrefs.GetFloat("SFXvolume");
-        Debug.Log("SFX: " + volume);
-        audioMixer.SetFloat("SFX", Mathf.Log10(volume) * 20);
-        PlayerPrefs.SetFloat("SFXvolume", volume);
+        SFXVolume = value;
+        Debug.Log("SFX: " + SFXVolume);
+        audioMixer.SetFloat("SFX", Mathf.Log10(SFXVolume) * 20);
     }
 }
