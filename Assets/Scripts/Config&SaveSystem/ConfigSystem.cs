@@ -157,6 +157,7 @@ public class ConfigSystem : MonoBehaviour
                 }
             }
         }
+        LoadConfig();
     }
 
     private IEnumerator waiter(int id) //Èasovaè aby se soubor mohl používat pouze jednou metodou

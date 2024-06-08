@@ -700,7 +700,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 970ed63874f49514fb9ea7fb165becd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSettings: {fileID: 0}
+  audioSettings: {fileID: 717854784}
   fileName: Config.txt
 --- !u!1 &485603286
 GameObject:
@@ -1369,7 +1369,7 @@ MonoBehaviour:
   audioMixer: {fileID: 24100000, guid: 258e460c3dcc3f3448575de6a999842d, type: 2}
   mainMenuBackground: {fileID: 1920149066}
   settingsMenu: {fileID: 1876371948}
-  configSystem: {fileID: 1269575227}
+  configSystem: {fileID: 387368124}
   src: {fileID: 387368122}
   click: {fileID: 8300000, guid: 7581b64b70545c54783656d4aefd1777, type: 3}
   panel: {fileID: 1920149066}
@@ -2734,17 +2734,6 @@ RectTransform:
   m_AnchoredPosition: {x: 5, y: -0.5}
   m_SizeDelta: {x: -30, y: -3}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1269575227 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7430984863333263508, guid: 601ab9c1b692ff944832e7b8c30300a3, type: 3}
-  m_PrefabInstance: {fileID: 6382684905543130904}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 970ed63874f49514fb9ea7fb165becd6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1329433398
 GameObject:
   m_ObjectHideFlags: 0
@@ -4526,67 +4515,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1001 &6382684905543130904
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 6349159356963485519, guid: 601ab9c1b692ff944832e7b8c30300a3, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 480.4746
-      objectReference: {fileID: 0}
-    - target: {fileID: 6349159356963485519, guid: 601ab9c1b692ff944832e7b8c30300a3, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 309.6931
-      objectReference: {fileID: 0}
-    - target: {fileID: 6349159356963485519, guid: 601ab9c1b692ff944832e7b8c30300a3, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -11.025029
-      objectReference: {fileID: 0}
-    - target: {fileID: 6349159356963485519, guid: 601ab9c1b692ff944832e7b8c30300a3, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6349159356963485519, guid: 601ab9c1b692ff944832e7b8c30300a3, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6349159356963485519, guid: 601ab9c1b692ff944832e7b8c30300a3, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6349159356963485519, guid: 601ab9c1b692ff944832e7b8c30300a3, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6349159356963485519, guid: 601ab9c1b692ff944832e7b8c30300a3, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6349159356963485519, guid: 601ab9c1b692ff944832e7b8c30300a3, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6349159356963485519, guid: 601ab9c1b692ff944832e7b8c30300a3, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6440173581045986328, guid: 601ab9c1b692ff944832e7b8c30300a3, type: 3}
-      propertyPath: m_Name
-      value: ConfigSystem
-      objectReference: {fileID: 0}
-    - target: {fileID: 7430984863333263508, guid: 601ab9c1b692ff944832e7b8c30300a3, type: 3}
-      propertyPath: audioSettings
-      value: 
-      objectReference: {fileID: 717854784}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 601ab9c1b692ff944832e7b8c30300a3, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -4595,4 +4523,3 @@ SceneRoots:
   - {fileID: 717854783}
   - {fileID: 1486338784}
   - {fileID: 387368123}
-  - {fileID: 6382684905543130904}
