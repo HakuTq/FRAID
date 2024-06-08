@@ -67,21 +67,18 @@ public class MainMenu : MonoBehaviour
     private void Start()
     {
         configSystem.LoadConfig();
-        //tady bude animace transition (fade in)
         panel.SetActive(true);
     }
 
     public void NewGame()
     {
         src.PlayOneShot(click);
-        //transition animace fade out
-        SceneManager.LoadScene("TestingScene"); //zatim level1, uvidime jak se to bude jmenovat pozdìjc
+        SceneManager.LoadScene("TestingScene");
     }
 
     public void GameContinue()
     {
         src.PlayOneShot(click);
-        //transition animace fade out
     }
 
     public void Settings()
@@ -100,9 +97,14 @@ public class MainMenu : MonoBehaviour
         settingsMenu.SetActive(false);
     }
 
-    private IEnumerator Quit()
+    public void Quit()
     {
         src.PlayOneShot(click);
+        StartCoroutine(_Quit());
+    }
+
+    private IEnumerator _Quit()
+    {
         yield return new WaitForSeconds(click.length);
         Debug.Log("Application has quit");
         UnityEngine.Application.Quit();

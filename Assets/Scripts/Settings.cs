@@ -18,8 +18,6 @@ public class Settings : MonoBehaviour
 
     Resolution[] resolutions;
 
-    public Animator transitionAnim;
-
     void Start()
     {
         if (PlayerPrefs.HasKey("MusicVolume"))
@@ -100,13 +98,5 @@ public class Settings : MonoBehaviour
     public void SetFullscreen(bool isFullscreen)
     {
         Screen.fullScreen = isFullscreen;
-    }
-
-    public IEnumerator BackToMainMenu()
-    {
-        src.PlayOneShot(srcOne);
-        transitionAnim.SetTrigger("Fade_End");
-        yield return new WaitForSeconds(0.99f);
-        SceneManager.LoadScene("MainMenu");
     }
 }

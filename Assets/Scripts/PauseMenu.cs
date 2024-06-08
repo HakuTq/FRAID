@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -95,5 +96,18 @@ public class PauseMenu : MonoBehaviour
     {
         Debug.Log("Application has quit");
         Application.Quit();
+    }
+
+    public void MMenu()
+    {
+        src.PlayOneShot(srcOne);
+        StartCoroutine(_MMenu());
+    }
+
+
+    private IEnumerator _MMenu()
+    {
+        yield return new WaitForSeconds(0.01f);
+        SceneManager.LoadScene("MainMenu");
     }
 }
