@@ -11,6 +11,7 @@ public class PlayerMovementScript : MonoBehaviour
     private bool shouldMove;
     private bool shouldJump;
     [SerializeField] private PlayerInput playerInput = null;
+    [SerializeField] private Animator animator = null;
 
     //********** PUBLIC **********
 
@@ -26,6 +27,12 @@ public class PlayerMovementScript : MonoBehaviour
         moveVector = Vector2.zero;
         shouldMove = false;
         shouldJump = false;
+    }
+
+    private void Update()
+    {
+        animator.SetBool("PlayerJump", ShouldJump);
+        animator.SetBool("PlayerRun", shouldMove);
     }
 
     // Called when the "GoLeft" action is triggered
