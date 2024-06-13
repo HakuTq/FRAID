@@ -58,21 +58,25 @@ public class PlayerPhysicsScript : MonoBehaviour
     {
         groundLayer = LayerMask.GetMask("Ground");
         movementScript = FindObjectOfType<PlayerMovementScript>();
-        rb = GetComponent<Rigidbody2D>();
-        List<Collider2D> collidersInChildren = GetComponentsInChildren<Collider2D>().ToList();
-        foreach (Collider2D collider in collidersInChildren)
+        rb = GetComponentInParent<Rigidbody2D>();
+
+        GameObject parent = GameObject.Find("Player");
+        //a long and goofy way to find componetnts in siblings
+        List<Collider2D> collidersInCollidersSibling = parent.transform.Find("Colliders").GetComponentsInChildren<Collider2D>().ToList();
+        Debug.Log(collidersInCollidersSibling.ToString());
+        foreach (Collider2D collider in collidersInCollidersSibling)
         {
             switch (collider.name)
             {
-                case "Down":
+                case "Feet":
                     {
                         down = collider; break;
                     }
-                case "Left":
+                case "Left Arm":
                     {
                         left = collider; break;
                     }
-                case "Right":
+                case "Right Arm":
                     {
                         right = collider; break;
                     }
