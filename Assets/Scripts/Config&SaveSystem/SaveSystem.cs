@@ -6,8 +6,7 @@ using UnityEngine;
 
 public class SaveSystem : MonoBehaviour
 {
-    string fullPath = Path.Combine(Application.persistentDataPath, ("save01"));
-    string currentSaveID = "01";
+    string fullPath;
     private Difficulty currentDifficulty;
     bool fileIsUsed = false;
     public enum Difficulty
@@ -20,21 +19,29 @@ public class SaveSystem : MonoBehaviour
     public Difficulty CurrentDifficulty
     {
         get { return currentDifficulty; }
+        set {  currentDifficulty = value; }
     }
 
-    public string CurrentSaveID
+    public enum SaveID
+    {
+        First,
+        Second,
+        Third
+    }
+
+    private SaveID currentSaveID = SaveID.First;
+
+    public SaveID CurrentSaveID
     {
         get { return currentSaveID; }
-        set 
-        { 
-            if (value == "01" || value == "02" || value == "03")
-            {
-                currentSaveID = value;
-                fullPath = Path.Combine(Application.persistentDataPath, ("save" + currentSaveID));
-            }
-        }
+        set { currentSaveID = value; }
     }
 
+
+    private void Start()
+    {
+        fullPath = Path.Combine(Application.persistentDataPath, ("save01"));
+    }
     public void CreateSave(out bool completed)
     {
         if (!File.Exists(fullPath))
@@ -68,11 +75,15 @@ public class SaveSystem : MonoBehaviour
             fileIsUsed = true;
             using (FileStream file = new FileStream(fullPath, FileMode.Open, FileAccess.Write))
             {
-
+                BinaryWriter writer = new BinaryWriter(file);
+                if (CurrentDifficulty == Difficulty.Easy) writer.Write(01);
+                else if (CurrentDifficulty == Difficulty.Normal) writer.Write(02);
+                else if (CurrentDifficulty == Difficulty.Hard) writer.Write(03);
+                else Debug.Log("Nepodarilo se zapsat Current Difficulty do Save Filu SaveSystem/Save");
             }
             fileIsUsed = false;
         }
-        else StartCoroutine(waitingLine(true));
+        else StartCoroutine(WaitingLine(true));
     }
 
     public void Load()
@@ -82,11 +93,19 @@ public class SaveSystem : MonoBehaviour
             fileIsUsed = true;
             using (FileStream file = new FileStream(fullPath, FileMode.Open, FileAccess.Read))
             {
-
+                BinaryReader reader = new BinaryReader(file);
+                int temp = reader.ReadInt32();
+                switch(temp)
+                {
+                    case 1: CurrentDifficulty = Difficulty.Easy; break;
+                    case 2: CurrentDifficulty = Difficulty.Normal; break;
+                    case 3: currentDifficulty = Difficulty.Hard; break;
+                    default: Debug.Log("Nelze nacist Current Difficulty v SaveSystemu/Load"); break;
+                }
             }
             fileIsUsed = false;
         }
-        else StartCoroutine(waitingLine(false));
+        else StartCoroutine(WaitingLine(false));
     }
 
     public void DoesSaveFileExist(out bool save01, out bool save02, out bool save03)
@@ -99,10 +118,10 @@ public class SaveSystem : MonoBehaviour
         else save03 = false;
     }
 
-    IEnumerator waitingLine(bool save)
+    IEnumerator WaitingLine(bool saveFunction)
     {
         yield return new WaitForSeconds(1);
-        if (save) Save();
+        if (saveFunction) Save();
         else Load();
     }
 }
