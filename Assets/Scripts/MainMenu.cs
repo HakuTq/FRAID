@@ -73,7 +73,7 @@ public class MainMenu : MonoBehaviour
     public void NewGame()
     {
         src.PlayOneShot(click);
-        SceneManager.LoadScene("TestingScene");
+        SceneManager.LoadScene("Level_1_Boss");
     }
 
     public void GameContinue()
@@ -86,7 +86,6 @@ public class MainMenu : MonoBehaviour
         src.PlayOneShot(click);
         isInSettings = true;
         mainMenuBackground.SetActive(false);
-        settingsMenu.SetActive(true);
     }
 
     public void ReturnFromSettings()
@@ -94,7 +93,7 @@ public class MainMenu : MonoBehaviour
         mainMenuBackground.SetActive(true);
         isInSettings = false;
         src.PlayOneShot(click);
-        settingsMenu.SetActive(false);
+        mainMenuBackground.SetActive(true);
     }
 
     public void Quit()
