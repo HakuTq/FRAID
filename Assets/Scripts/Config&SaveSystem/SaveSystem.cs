@@ -8,7 +8,22 @@ public class SaveSystem : MonoBehaviour
 {
     string fullPath;
     private Difficulty currentDifficulty;
+    private SceneManagement currentScene;
     bool fileIsUsed = false;
+
+    public SceneManagement CurrentScene { get { return currentScene; } }
+
+    public enum SceneManagement
+    {
+        Level_1,
+        Level_1_Boss,
+        Level_2,
+        Leve_2_Boss,
+        Level_3,
+        Level_3_Boss,
+        Level_4,
+        Level_4_Boss
+    }
     public enum Difficulty
     {
         Easy,
@@ -19,7 +34,7 @@ public class SaveSystem : MonoBehaviour
     public Difficulty CurrentDifficulty
     {
         get { return currentDifficulty; }
-        set {  currentDifficulty = value; }
+        set { currentDifficulty = value; }
     }
 
     public enum SaveID
@@ -29,35 +44,40 @@ public class SaveSystem : MonoBehaviour
         Third
     }
 
-    private SaveID currentSaveID = SaveID.First;
+    private SaveID currentSaveID;
 
     public SaveID CurrentSaveID
     {
         get { return currentSaveID; }
-        set { currentSaveID = value; }
+        set
+        {
+            if (value == SaveID.First) { fullPath = Path.Combine(Application.persistentDataPath, ("save01")); currentSaveID = value; }
+            else if (value == SaveID.Second) { fullPath = Path.Combine(Application.persistentDataPath, ("save02")); currentSaveID = value; }
+            else if (value == SaveID.Third) { fullPath = Path.Combine(Application.persistentDataPath, ("save03")); currentSaveID = value;}
+            else Debug.Log("CurrentSaveId is out of range");
+        }
     }
 
 
     private void Start()
     {
         fullPath = Path.Combine(Application.persistentDataPath, ("save01"));
+        currentScene = SceneManagement.Level_1_Boss; //HardCoded for testing
     }
-    public void CreateSave(out bool completed)
+    public void CreateSave(out bool completed) //man in the middle
     {
         if (!File.Exists(fullPath))
         {
-            File.Create(fullPath);
             Save();
             completed = true;
         }
         else completed = false;
     }
 
-    void CreateSave()
+    public void CreateSave()
     {
         if (!File.Exists(fullPath))
         {
-            File.Create(fullPath);
             Save();
         }
     }
@@ -73,7 +93,7 @@ public class SaveSystem : MonoBehaviour
         if (!fileIsUsed)
         {
             fileIsUsed = true;
-            using (FileStream file = new FileStream(fullPath, FileMode.Open, FileAccess.Write))
+            using (FileStream file = new FileStream(fullPath, FileMode.OpenOrCreate, FileAccess.Write))
             {
                 BinaryWriter writer = new BinaryWriter(file);
                 if (CurrentDifficulty == Difficulty.Easy) writer.Write(01);
@@ -91,7 +111,7 @@ public class SaveSystem : MonoBehaviour
         if (!fileIsUsed)
         {
             fileIsUsed = true;
-            using (FileStream file = new FileStream(fullPath, FileMode.Open, FileAccess.Read))
+            using (FileStream file = new FileStream(fullPath, FileMode.OpenOrCreate, FileAccess.Read))
             {
                 BinaryReader reader = new BinaryReader(file);
                 int temp = reader.ReadInt32();
@@ -108,14 +128,15 @@ public class SaveSystem : MonoBehaviour
         else StartCoroutine(WaitingLine(false));
     }
 
-    public void DoesSaveFileExist(out bool save01, out bool save02, out bool save03)
+    public void DoesSaveFileExist(out bool saveEmpty01, out bool saveEmpty02, out bool saveEmpty03)
     {
-        if (File.Exists(Path.Combine(Application.persistentDataPath, "save01"))) save01 = true;
-        else save01 = false;
-        if (File.Exists(Path.Combine(Application.persistentDataPath, "save02"))) save02 = true;
-        else save02 = false;
-        if (File.Exists(Path.Combine(Application.persistentDataPath, "save03"))) save03 = true;
-        else save03 = false;
+        Debug.Log((Path.Combine(Application.persistentDataPath, "save01")));
+        if (File.Exists(Path.Combine(Application.persistentDataPath, "save01"))) saveEmpty01 = false;
+        else saveEmpty01 = true;
+        if (File.Exists(Path.Combine(Application.persistentDataPath, "save02"))) saveEmpty02 = false;
+        else saveEmpty02 = true;
+        if (File.Exists(Path.Combine(Application.persistentDataPath, "save03"))) saveEmpty03 = false;
+        else saveEmpty03 = true;
     }
 
     IEnumerator WaitingLine(bool saveFunction)

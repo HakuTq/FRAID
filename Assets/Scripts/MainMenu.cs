@@ -13,6 +13,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] GameObject mainMenuBackground;
     [SerializeField] GameObject settingsMenu;
     [SerializeField] ConfigSystem configSystem;
+    [SerializeField] UI_SaveMenu saveMenu;
 
     public AudioSource src;
     public AudioClip click;
@@ -79,6 +80,7 @@ public class MainMenu : MonoBehaviour
     public void GameContinue()
     {
         src.PlayOneShot(click);
+        saveMenu.ShowSaveMenu();
     }
 
     public void Settings()
@@ -107,10 +109,6 @@ public class MainMenu : MonoBehaviour
         yield return new WaitForSeconds(click.length);
         Debug.Log("Application has quit");
         UnityEngine.Application.Quit();
-    }
-
-    public void NewGameSaveReset()
-    {
     }
 
     public void SetMusicVolume(float value)

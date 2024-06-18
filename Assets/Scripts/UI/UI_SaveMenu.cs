@@ -4,6 +4,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UI_SaveMenu : MonoBehaviour
 {
@@ -29,42 +30,36 @@ public class UI_SaveMenu : MonoBehaviour
         if (saveEmpty[0])
         {
             buttonText[0].text = "New Game";
-            newGameButton[0].SetActive(true);
         }
         else
         {
             saveSystem.CurrentSaveID = SaveSystem.SaveID.First;
             buttonText[0].text = "Difficutly: " + saveSystem.CurrentDifficulty.ToString();
+            newGameButton[0].SetActive(true);
         }
         if (saveEmpty[1])
         {
             buttonText[1].text = "New Game";
-            newGameButton[0].SetActive(true);
         }
         else
         {
             saveSystem.CurrentSaveID = SaveSystem.SaveID.Second;
             buttonText[1].text = "Difficutly: " + saveSystem.CurrentDifficulty.ToString();
+            newGameButton[1].SetActive(true);
         }
         if (saveEmpty[2])
         {
             buttonText[2].text = "New Game";
-            newGameButton[0].SetActive(true);
         }
         else
         {
             saveSystem.CurrentSaveID = SaveSystem.SaveID.Third;
             buttonText[2].text = "Difficutly: " + saveSystem.CurrentDifficulty.ToString();
+            newGameButton[2].SetActive(true);
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    void Button01Clicked()
+    public void Button01Clicked()
     {
         saveSystem.CurrentSaveID = SaveSystem.SaveID.First;
         if (saveEmpty[0])
@@ -80,7 +75,7 @@ public class UI_SaveMenu : MonoBehaviour
         }
         else
         {
-            //SceneManager.LoadScene(SaveSystem.CurrentScene);
+            SceneManager.LoadScene(saveSystem.CurrentScene.ToString());
             Debug.Log("SaveFile01 se nacetl uspesne");
         }
     }
@@ -101,7 +96,7 @@ public class UI_SaveMenu : MonoBehaviour
         }
         else
         {
-            //SceneManager.LoadScene(SaveSystem.CurrentScene);
+            SceneManager.LoadScene(saveSystem.CurrentScene.ToString());
             Debug.Log("SaveFile02 se nacetl uspesne");
         }
     }
@@ -122,7 +117,7 @@ public class UI_SaveMenu : MonoBehaviour
         }
         else
         {
-            //SceneManager.LoadScene(SaveSystem.CurrentScene);
+            SceneManager.LoadScene(saveSystem.CurrentScene.ToString());
             Debug.Log("SaveFile03 se nacetl uspesne");
         }
     }
@@ -174,5 +169,10 @@ public class UI_SaveMenu : MonoBehaviour
             case 3: Button03NewGame(); break;
             default: break;
         }
+    }
+
+    public void ShowSaveMenu()
+    {
+        saveMenu.SetActive(true);
     }
 }
