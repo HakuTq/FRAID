@@ -4,15 +4,8 @@ using UnityEngine;
 
 public class PlayerMainScript : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public Vector2 Position
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        get { return transform.position; }
     }
 }

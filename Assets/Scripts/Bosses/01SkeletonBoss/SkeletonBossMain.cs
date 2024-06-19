@@ -17,6 +17,7 @@ public class SkeletonBossMain : MonoBehaviour
     Animator animator;
     SpriteRenderer sprite;
     //SCRIPTS
+    [SerializeField] PlayerMainScript playerMainScript;
     //Variables
     float health;
     float timer_timeBetweenAttacks = 0;
@@ -42,6 +43,7 @@ public class SkeletonBossMain : MonoBehaviour
     private void Update()
     {
         //timers
+        Debug.Log(readyToAttack);
         if (!readyToAttack)
         {
             timer_timeBetweenAttacks += Time.deltaTime;
@@ -54,16 +56,18 @@ public class SkeletonBossMain : MonoBehaviour
         //health
         if (health <= 0) BossDeath();
         //Attack
-        if (readyToAttack && distanceBetweenPlayerAndBoss < 2) //random ass unit
+        distanceBetweenPlayerAndBoss = Vector2.Distance(transform.position, playerMainScript.transform.position);
+        if (readyToAttack && distanceBetweenPlayerAndBoss < 2)
         {
+            readyToAttack = false;
+            //rb.velocity = Vector2.zero;
             animator.SetTrigger("attack");
         }
-        //
-        //if (player.transform.position.x > transorm.position.x) faceLeft = true; --kdyby se nahodou nekdy pouzivalo
-        //else faceLeft = false; 
-        if (faceLeft) sprite.flipX = false;
-        else sprite.flipX = true;
-        //distanceBetweenPlayerAndBoss = Vector2.Distance(transform.position, playerScript)
+        else if (transform.position.x > playerMainScript.transform.position.x)
+        {
+            WalkingLeft();
+        }
+        else WalkingRight();
     }
 
     void BossDeath()
@@ -73,14 +77,14 @@ public class SkeletonBossMain : MonoBehaviour
 
     public void WalkingLeft()
     {
-        transform.position = Vector2.left * walkingSpeed * Time.deltaTime;
+        rb.velocity = Vector2.left * walkingSpeed;
         animator.SetBool("isWalking", true);
         sprite.flipX = false;
     }
 
     public void WalkingRight()
     {
-        transform.position = Vector2.right * walkingSpeed * Time.deltaTime;
+        rb.velocity = Vector2.right * walkingSpeed;
         animator.SetBool("isWalking", true);
         sprite.flipX = true;  
     }
