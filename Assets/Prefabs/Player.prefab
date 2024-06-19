@@ -433,7 +433,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e196834cce7b3b94b8bfbebcf419e4f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerController: {fileID: 0}
+  playerController: {fileID: 962060499124148782}
   jumpAction: {fileID: -4357340462292373148, guid: 0b84eea18567759459fb5a8b93d5a4d2, type: 3}
   walkLAction: {fileID: 4567914866695474095, guid: 0b84eea18567759459fb5a8b93d5a4d2, type: 3}
   walkRAction: {fileID: -6194812231995346235, guid: 0b84eea18567759459fb5a8b93d5a4d2, type: 3}
@@ -510,6 +510,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 312b8703-71fd-4cd0-9204-a50398567b93
     m_ActionName: Movement/Jump[/Keyboard/w]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 962060499124148782}
+        m_TargetAssemblyTypeName: PlayerMovementScript, Assembly-CSharp
+        m_MethodName: Dash
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: a1af459a-1054-4d87-853f-b3df8e3502a2
+    m_ActionName: Movement/Dash[/Keyboard/leftShift]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Movement
@@ -528,7 +544,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerInput: {fileID: 1350561499800351764}
-  animator: {fileID: 1243048273282332037}
 --- !u!114 &4171625108501944604
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -541,10 +556,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29835aebcbff7bd4fba97385ec642ae7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 1243048273282332037}
   movementSpeedAir: 300
   movementSpeedGround: 300
+  dashSpeed: 500
   jumpHeight: 300
+  dashTime: 3
+  animator: {fileID: 1243048273282332037}
 --- !u!114 &4724787949098212634
 MonoBehaviour:
   m_ObjectHideFlags: 0

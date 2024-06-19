@@ -10,6 +10,7 @@ public class PlayerMovementScript : MonoBehaviour
     private Vector2 moveVector;
     private bool shouldMove;
     private bool shouldJump;
+    private bool shouldDash;
     [SerializeField] private PlayerInput playerInput = null;
 
     //********** PUBLIC **********
@@ -17,6 +18,7 @@ public class PlayerMovementScript : MonoBehaviour
     public Vector2 MoveVector { get { return moveVector; } }
     public bool ShouldMove { get { return shouldMove;} }
     public bool ShouldJump { get { return shouldJump;} }
+    public bool ShouldDash { get { return shouldDash; } set { shouldDash = value; } }
     public PlayerInput PlayerInput => playerInput;
 
     // Awake is called when the script instance is being loaded
@@ -26,6 +28,7 @@ public class PlayerMovementScript : MonoBehaviour
         moveVector = Vector2.zero;
         shouldMove = false;
         shouldJump = false;
+        shouldDash = false;
     }
 
     // Called when the "GoLeft" action is triggered
@@ -71,6 +74,14 @@ public class PlayerMovementScript : MonoBehaviour
         {
             moveVector.y = 0;
             shouldJump = false;
+        }
+    }
+    // Called when the "Dash" action is triggered
+    public void Dash(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            shouldDash = true;
         }
     }
 }

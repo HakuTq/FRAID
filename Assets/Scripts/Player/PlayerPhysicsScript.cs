@@ -17,11 +17,19 @@ public class PlayerPhysicsScript : MonoBehaviour
     [Header("Movement Speeds")]
     [SerializeField] private int movementSpeedAir;
     [SerializeField] private int movementSpeedGround;
+    [SerializeField] private int dashSpeed;
     [SerializeField] private int jumpHeight;
     //***** Layers *****
-    LayerMask groundLayer;
+    private LayerMask groundLayer;
+    //***** Dashinng *****
+    private bool isDashing;
+    private Vector2 preDashVelocity;
+    private float dashTimeStarted;
+    [Header("Dash Time")]
+    [SerializeField] private float dashTime;
     //***** Flipping Sprite + animation *****
     private Transform parentTransform;
+    [Header("References")]
     [SerializeField] private Animator animator = null;
     //***** States *****
     private bool isTouchingGroundDown
@@ -64,6 +72,7 @@ public class PlayerPhysicsScript : MonoBehaviour
         groundLayer = LayerMask.GetMask("Ground");
         movementScript = FindObjectOfType<PlayerMovementScript>();
         rb = GetComponentInParent<Rigidbody2D>();
+        isDashing = false;
 
         GameObject parent = GameObject.Find("Player");
 
@@ -127,7 +136,24 @@ public class PlayerPhysicsScript : MonoBehaviour
         }
         else
         {
-            if (movementScript.ShouldMove && !(isTouchingGroundLeft || isTouchingGroundRight))
+            if (movementScript.ShouldDash)
+            {
+                if (!isDashing)
+                {
+                    isDashing = true;
+                    preDashVelocity = rb.velocity;
+                    dashTimeStarted = Time.time;
+                    movementVector.x = (movementScript.MoveVector * dashSpeed * Time.deltaTime).x;
+                }
+
+                if (Time.time - dashTimeStarted > dashTime)
+                {
+                    movementScript.ShouldDash = false;
+                    isDashing = false;
+                    movementVector = preDashVelocity;
+                }
+            }
+            else if (movementScript.ShouldMove && !(isTouchingGroundLeft || isTouchingGroundRight))
             {
                 movementVector.x = (movementScript.MoveVector * movementSpeedAir * Time.deltaTime).x;
             }
