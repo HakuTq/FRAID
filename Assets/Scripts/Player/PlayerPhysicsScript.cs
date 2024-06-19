@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerPhysicsScript : MonoBehaviour
@@ -18,6 +20,9 @@ public class PlayerPhysicsScript : MonoBehaviour
     [SerializeField] private int jumpHeight;
     //***** Layers *****
     LayerMask groundLayer;
+    //***** Flipping Sprite + animation *****
+    private Transform parentTransform;
+    [SerializeField] private Animator animator = null;
     //***** States *****
     private bool isTouchingGroundDown
     {
@@ -61,6 +66,8 @@ public class PlayerPhysicsScript : MonoBehaviour
         rb = GetComponentInParent<Rigidbody2D>();
 
         GameObject parent = GameObject.Find("Player");
+
+        parentTransform = parent.GetComponent<Transform>();
         //a long and goofy way to find componetnts in siblings
         List<Collider2D> collidersInCollidersSibling = parent.transform.Find("Colliders").GetComponentsInChildren<Collider2D>().ToList();
         Debug.Log(collidersInCollidersSibling.ToString());
@@ -81,6 +88,22 @@ public class PlayerPhysicsScript : MonoBehaviour
                         right = collider; break;
                     }
             }
+        }
+    }
+
+    private void Update()
+    {
+        animator.SetBool("ShouldJump", movementScript.ShouldJump);
+        animator.SetBool("ShouldMove", movementScript.ShouldMove);
+        animator.SetBool("IsTouchingGround", IsTouchingGroundDown);
+
+        if (rb.velocity.x > 0)
+        {
+            ScaleX(parentTransform, false);
+        }
+        else if (rb.velocity.x < 0)
+        {
+            ScaleX(parentTransform, true);
         }
     }
 
@@ -110,5 +133,19 @@ public class PlayerPhysicsScript : MonoBehaviour
             }
         }
         rb.velocity = movementVector;
+    }
+
+    private void ScaleX(Transform transform, bool isXPositive)
+    {
+        float x = transform.localScale.x;
+        float y = transform.localScale.y;
+        if (isXPositive)
+        {
+            transform.localScale = new Vector2(+math.abs(x), y);
+        }
+        else
+        {
+            transform.localScale = new Vector2(-math.abs(x), y);
+        }
     }
 }
