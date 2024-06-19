@@ -17,7 +17,6 @@ public class SkeletonBossMain : MonoBehaviour
     Animator animator;
     SpriteRenderer sprite;
     //SCRIPTS
-    //PlayerScript 
     //Variables
     float health;
     float timer_timeBetweenAttacks = 0;
@@ -55,7 +54,7 @@ public class SkeletonBossMain : MonoBehaviour
         //health
         if (health <= 0) BossDeath();
         //Attack
-        if (readyToAttack && distanceBetweenPlayerAndBoss < 5) //random ass unit
+        if (readyToAttack && distanceBetweenPlayerAndBoss < 2) //random ass unit
         {
             animator.SetTrigger("attack");
         }
@@ -64,7 +63,7 @@ public class SkeletonBossMain : MonoBehaviour
         //else faceLeft = false; 
         if (faceLeft) sprite.flipX = false;
         else sprite.flipX = true;
-        //distanceBetweenPlayerAndBoss = Vector2.Distance(transform.position, ) - add Playerscript.Transform.Position
+        //distanceBetweenPlayerAndBoss = Vector2.Distance(transform.position, playerScript)
     }
 
     void BossDeath()

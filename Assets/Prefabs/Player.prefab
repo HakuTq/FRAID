@@ -398,6 +398,7 @@ GameObject:
   - component: {fileID: 1350561499800351764}
   - component: {fileID: 962060499124148782}
   - component: {fileID: 4171625108501944604}
+  - component: {fileID: 4724787949098212634}
   m_Layer: 0
   m_Name: Scripts
   m_TagString: Untagged
@@ -544,6 +545,25 @@ MonoBehaviour:
   movementSpeedAir: 300
   movementSpeedGround: 300
   jumpHeight: 300
+--- !u!114 &4724787949098212634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6471753705678967807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9784caf9b64cb094a8122e0affb8974f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ui_PlayerHealth: {fileID: 0}
+  health: 100
+  maxHealth: 100
+  invincibilityTime: 0.5
+  timerInvincibility: 0
+  invincible: 0
+  godMode: 0
 --- !u!1 &7017207481936547998
 GameObject:
   m_ObjectHideFlags: 0
