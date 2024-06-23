@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class PlayerMainScript : MonoBehaviour
 {
-    public Vector2 Position
+    [SerializeField] PlayerHealth playerHealth;
+
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        get { return transform.position; }
+        if (collision.tag == "EnemyDamage") playerHealth.PlayerDamage();
     }
 }
