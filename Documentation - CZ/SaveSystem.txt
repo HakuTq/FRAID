@@ -1,0 +1,6 @@
+Ukládání je založeno na XML formátu, který je překládán do binárního, díky tomu se může něco přidat bez potřeby narušovat zbytek kodu
+WaitingLine a 'fileIsUsed' zajišťuje, aby nebylo spustěno Save a Load najednou
+Save ukládá všechny proměnné, které se vyskytují v SaveSystemu (proměnné jsou v //public variables) a zapíše je ve formátu <Diff:*value*>, pokud se tak nestane, do Debug Logu zapíše chybu
+Když Load přečte začátek proměnné "<", uloží od tohoto místa až po ":" do proměnné "variable" podle které se pak ve switchi rozhoduje do které proměnné zapsat další hodnotu po ":"
+<scene:00>
+Load do variable načte "scene:" a podle switche do "CurrentScene" zapíše ID 00
