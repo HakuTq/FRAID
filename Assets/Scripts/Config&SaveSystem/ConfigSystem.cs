@@ -3,16 +3,68 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.IO;
+using System.Globalization;
 
 public class ConfigSystem : MonoBehaviour
 {
     [SerializeField] MainMenu audioSettings;
+    [SerializeField] Settings settings;
     [SerializeField] string fileName;
     string fullPath;
     bool fileIsUsed = false;
+    //AllVariables
+    float musicVolume = 0.8f, sfxVolume = 1f, refreshRate = 60;
+    int screenWidth = 1080, screenHeight = 1920;
+    bool vsync = true;
+    bool fullscreen = true;
+    public float MusicVolume
+    {
+        get { return musicVolume; }
+        set 
+        { 
+            if (value >= 0 && value <= 100) musicVolume = value; 
+            else Debug.Log("Couldnt set MusicVolume in ConfigSystem, value = " + value);
+        }
+    }
+    public float SFXVolume
+    {
+        get { return sfxVolume; }
+        set
+        {
+            if (value >= 0 && value <= 100) sfxVolume = value;
+            else Debug.Log("Couldnt set SFXVolume in ConfigSystem, value = " + value);
+        }
+    }
+    public int ScreenWidth
+    {
+        get { return screenWidth; }
+        set { screenWidth = value; }
+    }
+    public int ScreenHeight
+    {
+        get { return screenHeight; }
+        set { screenHeight = value; }
+    }
+    public float RefreshRate
+    {
+        get { return refreshRate; }
+        set { refreshRate = value; }
+    }
+    public bool Vsync
+    {
+        get { return vsync; }
+        set { vsync = value; }
+    }
+    public bool Fullscreen
+    {
+        get { return fullscreen; }
+        set { fullscreen = value; }
+    }
     private void Start()
     {
         fullPath = Path.Combine(Application.persistentDataPath, fileName); //persistentDataPath neboli Unity si to zaøídí samo :)
+        Debug.Log("Config file path: " + fullPath);
+        LoadConfig();
     }
     public void SaveConfig()
     {
@@ -23,22 +75,29 @@ public class ConfigSystem : MonoBehaviour
             {
                 using (StreamWriter writer = new StreamWriter(stream))
                 {
-                    //writer.Write("screen_width=");
-                    //writer.Write("screen_height=");
-                    if (audioSettings != null)
-                    {
-                        writer.Write("music_volume=");
-                        writer.Write(audioSettings.MusicVolume);
-                        writer.WriteLine();
-                        writer.Write("soundEffects_volume=");
-                        writer.Write(audioSettings.SFXVolume);
-                        writer.WriteLine();
-                    }
-                    else
-                    {
-                        writer.Write("music_volume=");
-                        writer.Write("soundEffects_volume=");
-                    }
+                    writer.Write("screen_width=");
+                    writer.Write(ScreenWidth);
+                    writer.WriteLine();
+                    writer.Write("screen_height=");
+                    writer.Write(ScreenHeight);
+                    writer.WriteLine();
+                    writer.Write("refresh_rate=");
+                    writer.Write(RefreshRate);
+                    writer.WriteLine();
+                    writer.Write("vsync=");
+                    if (vsync) writer.Write("true");
+                    else writer.Write("false");
+                    writer.Write("fulscreen=");
+                    if (fullscreen) writer.Write("true");
+                    else writer.Write("false");
+                    writer.WriteLine();
+                    writer.Write("music_volume=");
+                    writer.Write(MusicVolume);
+                    writer.WriteLine();
+                    writer.Write("soundEffects_volume=");
+                    writer.Write(SFXVolume);
+                    writer.WriteLine();
+
                     //writer.Write("key_moveLeft=");
                     //writer.Write("key_moveRight=");
                     //writer.Write("key_jump=");
@@ -74,20 +133,40 @@ public class ConfigSystem : MonoBehaviour
                                 {
                                     case "screen_width":
                                         {
+                                            ScreenWidth = int.Parse(info[1]);
                                             break;
                                         }
                                     case "screen_height":
                                         {
+                                            ScreenHeight = int.Parse(info[1]);
                                             break;
                                         }
                                     case "music_volume":
                                         {
-                                            audioSettings.SetMusicVolume(float.Parse(info[1]));
+                                            string fuckyoufloatparse = info[1].Replace(',','.');
+                                            MusicVolume = float.Parse(fuckyoufloatparse, CultureInfo.InvariantCulture);
                                             break;
                                         }
                                     case "soundEffects_volume":
                                         {
-                                            audioSettings.SetSFXVolume(float.Parse(info[1]));
+                                            string fuckyoufloatparse = info[1].Replace(',', '.');
+                                            SFXVolume = float.Parse(fuckyoufloatparse, CultureInfo.InvariantCulture);
+                                            break;
+                                        }
+                                    case "fullscreen":
+                                        {
+                                            Fullscreen = bool.Parse(info[1]);
+                                            break;
+                                        }
+                                    case "vsync":
+                                        {
+                                            Vsync = bool.Parse(info[1]);
+                                            break;
+                                        }
+                                    case "refresh_rate":
+                                        {
+                                            string fuckyoufloatparse = info[1].Replace(',', '.');
+                                            RefreshRate = float.Parse(fuckyoufloatparse, CultureInfo.InvariantCulture);
                                             break;
                                         }
                                     case "key_moveLeft":

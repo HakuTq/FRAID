@@ -11,6 +11,7 @@ public class Settings : MonoBehaviour
     [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private Slider musicVolSlider;
     [SerializeField] private Slider SFXVolSlider;
+    ConfigSystem config;
 
     public TMPro.TMP_Dropdown resolutionDropdown;
 
@@ -21,24 +22,18 @@ public class Settings : MonoBehaviour
 
     void Start()
     {
-        if (PlayerPrefs.HasKey("MusicVolume"))
+        config = FindFirstObjectByType<ConfigSystem>();
+        if (config != null)
         {
-            LoadMusicVolume();
+            SetMusicVolume(config.MusicVolume);
+            SetSFXVolume(config.SFXVolume);
         }
         else
         {
+            Debug.Log("Settings.cs nenasel ConfigSystem");
             SetMusicVolume();
-        }
-
-        if (PlayerPrefs.HasKey("SFXvolume"))
-        {
-            LoadSFXvolume();
-        }
-        else
-        {
             SetSFXVolume();
         }
-
         resolutions = Screen.resolutions;
 
         resolutionDropdown.ClearOptions();
@@ -65,35 +60,32 @@ public class Settings : MonoBehaviour
     public void SetResolution(int resolutionIndex)
     {
         Resolution resolution = resolutions[resolutionIndex];
-        Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
+        config.ScreenHeight = resolution.height;
+        config.ScreenWidth = resolution.width;
+        config.SaveConfig();
+        if (config.Fullscreen) Screen.SetResolution(config.ScreenWidth, config.ScreenHeight, true);
+        else Screen.SetResolution(config.ScreenWidth, config.ScreenHeight, false);
     }
 
     public void SetMusicVolume()
     {
-        float volume = musicVolSlider.value;
-        audioMixer.SetFloat("Music", Mathf.Log10(volume) * 20);
-        PlayerPrefs.SetFloat("MusicVolume", volume);
+        audioMixer.SetFloat("Music", Mathf.Log10(musicVolSlider.value) * 20);
     }
 
-    public void LoadMusicVolume()
+    public void SetMusicVolume(float value)
     {
-        musicVolSlider.value = PlayerPrefs.GetFloat("MusicVolume");
-
-        SetMusicVolume();
+        musicVolSlider.value = value;
+        audioMixer.SetFloat("Music", Mathf.Log10(value) * 20);
     }
-
     public void SetSFXVolume()
     {
-        float volume = SFXVolSlider.value;
-        audioMixer.SetFloat("SFX", Mathf.Log10(volume) * 20);
-        PlayerPrefs.SetFloat("SFXvolume", volume);
+        audioMixer.SetFloat("SFX", Mathf.Log10(SFXVolSlider.value) * 20);
     }
 
-    public void LoadSFXvolume()
+    public void SetSFXVolume(float value)
     {
-        SFXVolSlider.value = PlayerPrefs.GetFloat("SFXvolume");
-
-        SetSFXVolume();
+        SFXVolSlider.value = value;
+        audioMixer.SetFloat("SFX", Mathf.Log10(value) * 20);
     }
 
     public void SetFullscreen(bool isFullscreen)
