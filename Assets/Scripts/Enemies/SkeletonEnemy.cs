@@ -8,22 +8,37 @@ public class SkeletonEnemy : MonoBehaviour
     //[SerializeField] Player Player; --PlayerScript
     [SerializeField] float maxHealth;
     [SerializeField] GameObject arrowPrefab;
-    [SerializeField] float nextFireTime;
+    [SerializeField] float timeToRecoverFromAttack;
+    [SerializeField] float health;
+
 
     Rigidbody2D rb;
     SpriteRenderer sprite;
+    Animator animator;
     BoxCollider2D collider;
-    float timerFired = 0;
-    bool readyToFire = true;
-    double health;
+    bool isFacingLeft = false;
+    bool recoveringFromAttack = false;
+    bool readyToAttack = true;
+    bool recoveredFromAttack = false;
+    float timerToRecoverFromAttack = 0;
 
-    public bool ReadyToFire
+    public bool RecoveringFromAttack
     {
-        get { return readyToFire; }
+        get { return recoveringFromAttack; }
+    }
+    public bool ReadyToAttack
+    {
+        get { return readyToAttack; }
+    }
+    public bool RecoveredFromAttack
+    {
+        get { return recoveredFromAttack; }
+        set { recoveredFromAttack = value; }
     }
 
     void Start()
     {
+        animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
         collider = GetComponent<BoxCollider2D>();
@@ -31,25 +46,28 @@ public class SkeletonEnemy : MonoBehaviour
     }
     void Update()
     {
-        if (health <= 0) EnemyDeath();
-        if (!readyToFire)
+        if (health <= 0) SkeletonDeath();
+        if (!recoveringFromAttack) readyToAttack = true;
+        else
         {
-            timerFired += Time.deltaTime;
-            if (timerFired > nextFireTime)
+            timerToRecoverFromAttack += Time.deltaTime;
+            if (timerToRecoverFromAttack > timeToRecoverFromAttack)
             {
-                readyToFire = true;
-                timerFired = 0;
+                timerToRecoverFromAttack = 0;
+                recoveringFromAttack = false;
+                recoveredFromAttack = true;
             }
         }
     }
 
-    public void ShootArrow()
+    public void Attack()
     {
-        Instantiate(arrowPrefab, transform.position, transform.rotation);
-        readyToFire = false;
+        animator.SetTrigger("attack");
+        recoveringFromAttack = true;
+        readyToAttack = false;
     }
 
-    private void EnemyDeath()
+    private void SkeletonDeath()
     {
         Destroy(gameObject);
     }
@@ -58,7 +76,31 @@ public class SkeletonEnemy : MonoBehaviour
     {
         if (collision.gameObject.tag == "PlayerWeapon")
         {
-            //health -= weaponDamage;
+            health -= 50; //weaponDamage;
         }
     }
+
+    public void ChangeFacingDirection()
+    {
+        if (isFacingLeft) FaceRight();
+        else FaceLeft();
+    }
+
+    public void ChangeFacingDirection(bool faceLeft)
+    {
+        if (faceLeft) FaceLeft();
+        else FaceRight();
+    }
+
+    private void FaceRight()
+    {
+        isFacingLeft = false;
+        animator.SetBool("isFacingLeft", false);
+    }
+    private void FaceLeft()
+    {
+        isFacingLeft = true;
+        animator.SetBool("isFacingLeft", true);
+    }
+
 }

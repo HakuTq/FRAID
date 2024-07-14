@@ -11,13 +11,19 @@ public class SkeletonEnemyAI : MonoBehaviour
     [SerializeField] GameObject patrolPointB;
     [SerializeField] GameObject player;
     [SerializeField] SkeletonEnemy skeletonEnemy;
-    [SerializeField] Animator animator;
     [SerializeField] float speed;
     [SerializeField] float chaseSpeed;
     [SerializeField] float distanceToAttack;
-    [SerializeField] float gizmosSphereRadius;
-    private Rigidbody2D rb;
-    private bool patrolGoingLeft = true;
+    [SerializeField] float gizmosSphereRadius;    
+    [SerializeField] float distanceToPatrol;
+    //Unity Shit
+    Rigidbody2D rb;
+    //ma shit
+    bool patrolGoingLeft = true;
+    float timeToChangeFacingDirection;
+    float timerChangeFacingDirection = 0;
+    float timerToRecoverFromAttack = 0;
+    float distanceBetweenPlayerAndEntity;
 
     private CurrentPhase phase;
     public enum CurrentPhase
@@ -31,65 +37,83 @@ public class SkeletonEnemyAI : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         phase = CurrentPhase.Patrol;
+        timeToChangeFacingDirection = (Random.value * 10) + 10; //min = 10s, max = 20
     }
 
     void Update()
     {
+        distanceBetweenPlayerAndEntity = Vector2.Distance(player.transform.position, transform.position);
         switch (phase)
         {
-            case CurrentPhase.Idle:
+            case CurrentPhase.Idle: //Skeleton is Still, changes facing direction every (10,20) seconds
                 {
-                    rb.velocity = new Vector2();
-                    if (skeletonEnemy.ReadyToFire) phase = CurrentPhase.Chase;
-                    //animator
+                    rb.angularVelocity = 0;
+                    if (timerChangeFacingDirection > timeToChangeFacingDirection)
+                    {
+                        timerChangeFacingDirection = 0;
+                        skeletonEnemy.ChangeFacingDirection();
+                    }
+                    else
+                    {
+                        timerChangeFacingDirection += Time.deltaTime;
+                    }
                     break;
                 }
-            case CurrentPhase.Patrol:
+            case CurrentPhase.Patrol: //Patrols between two points
                 {
                     //Logic
                     if (Vector2.Distance(transform.position, patrolPointB.transform.position) < 0.5f) //pointB je vpravo
                     {
                         patrolGoingLeft = false;
-                        //animation 
                     }
                     else if (Vector2.Distance(transform.position, patrolPointA.transform.position) < 0.5f) //pointA je vlevo
                     {
                         patrolGoingLeft = true;
-                        //animation
                     }
                     else if (!IsPointBetweenPositionX(patrolPointA.transform.position, patrolPointB.transform.position, transform.position)) //mimo patrol
                     {
                         if (Vector2.Distance(patrolPointA.transform.position, transform.position) > Vector2.Distance(patrolPointB.transform.position, transform.position)) patrolGoingLeft = true; //Když je bod A (vpravo) vzdalenejsi nez bod B (vlevo), tak je enemy v pravo a musi jit doleva
                         else patrolGoingLeft = false;
                     }
+                    //animator based on patrolGoingLeft
                     //Where to move
                     if (patrolGoingLeft) rb.velocity = Vector2.left * speed;
                     else rb.velocity = Vector2.right * speed;
                     break;
                 }
-            case CurrentPhase.Chase:
+            case CurrentPhase.Chase: //Chases the Player
                 {
-                    if (player.transform.position.x < transform.position.x) rb.velocity = Vector2.left * chaseSpeed;
-                    if (player.transform.position.x > transform.position.x) rb.velocity = Vector2.right * chaseSpeed;
-                    if (Vector2.Distance(player.transform.position, transform.position) <= distanceToAttack && skeletonEnemy.ReadyToFire) phase = CurrentPhase.Attack; //Phase Attack jestli je enemy dost blízko a mùže støílet
+                    if (distanceBetweenPlayerAndEntity >= distanceToPatrol) phase = CurrentPhase.Patrol;
+                    else
+                    {
+                        if (player.transform.position.x < transform.position.x) rb.velocity = Vector2.left * chaseSpeed;
+                        if (player.transform.position.x > transform.position.x) rb.velocity = Vector2.right * chaseSpeed;
+                        if (distanceBetweenPlayerAndEntity <= distanceToAttack && skeletonEnemy.ReadyToAttack) phase = CurrentPhase.Attack; //Goes to attack Phase if close enough to the player
+                    }
                     break;
                 }
-            case CurrentPhase.Attack:
+            case CurrentPhase.Attack: //Attack is triggered if Skeleton is Close Enough, After the attack, the unit is stationary for a while before going into the chase phase
                 {
-                    rb.velocity = new Vector2();
-                    skeletonEnemy.ShootArrow();
-                    phase = CurrentPhase.Idle;
+                    if (skeletonEnemy.RecoveredFromAttack)
+                    {
+                        skeletonEnemy.RecoveredFromAttack = false;
+                        phase = CurrentPhase.Chase;
+                    }
+                    else
+                    {
+                        if (skeletonEnemy.ReadyToAttack && !skeletonEnemy.RecoveringFromAttack) skeletonEnemy.Attack();
+                    }
                     break;
                 }
         }
     }
 
-    private bool IsPointBetweenPositionX(Vector2 pointA, Vector2 pointB, Vector2 point)
+    bool IsPointBetweenPositionX(Vector2 pointA, Vector2 pointB, Vector2 point)
     {
         return (Mathf.Min(pointA.x, pointB.x) <= point.x && Mathf.Max(pointA.x, pointB.x) <= point.x);
     }
 
-    private void OnDrawGizmos() //Zobrazi body a caru patrol enemaka v Unity Scene
+    void OnDrawGizmos() //Zobrazi body a caru patrol enemaka v Unity Scene
     {
         Gizmos.DrawSphere(patrolPointA.transform.position, gizmosSphereRadius);
         Gizmos.DrawSphere(patrolPointB.transform.position, gizmosSphereRadius);
