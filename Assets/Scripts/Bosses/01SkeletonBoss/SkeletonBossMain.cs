@@ -37,6 +37,7 @@ public class SkeletonBossMain : MonoBehaviour
         get { return health; }
         set
         {
+            if (value == 0) BossStateDeath();
             if (value <= maxHealth)
             {
                 if (value <= 40) currentPhase = Phase.second;

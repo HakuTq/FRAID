@@ -6,6 +6,8 @@ public class PlayerHealth : MonoBehaviour
 {
     [Header("Scripts")]
     [SerializeField] UI_PlayerHealth ui_PlayerHealth;
+    [SerializeField] UI_PlayerDeath ui_PlayerDeath;
+    Animator animator;
     [Header("Hodnoty")]
     [SerializeField] private float health;
     [SerializeField] private float maxHealth;
@@ -13,13 +15,16 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float timerInvincibility;
     [SerializeField] private bool invincible; //nastavuje se pøes metodu
     [SerializeField] private bool godMode; //nevztahuje se na nìj èasovaè
-    private bool isDead = false;
-
     public float Health
     {
         get { return health; }
         set 
         {
+            if (value == 0)
+            {
+                animator.SetTrigger("death");
+                ui_PlayerDeath.PlayerDeathUI();                
+            }
             ui_PlayerHealth.SetHealthUI();
             if (value > maxHealth) health = maxHealth; //Životy nemùžou pøekroèit maximální životy
             else health = value;
@@ -42,11 +47,6 @@ public class PlayerHealth : MonoBehaviour
     {
         get { return godMode; }
         set { godMode = value; }
-    }
-
-    public bool IsDead
-    {
-        get { return isDead; }
     }
 
     public void PlayerSetInvincible() //Zapne odpoèet pro invincibility frames
@@ -92,6 +92,15 @@ public class PlayerHealth : MonoBehaviour
         Health += 1;
     }
 
+    public void PlayerDeath()
+    {
+        Health = 0;
+
+    }
+    private void Start()
+    {
+        animator = GetComponent<Animator>();
+    }
     private void Update()
     {
         if (invincible) //Invincibility frames timer
@@ -103,8 +112,6 @@ public class PlayerHealth : MonoBehaviour
                 timerInvincibility = invincibilityTime;
             }
         }
-
-        if (health <= 0) isDead = true; //Kontrola smrti
     }
 
 

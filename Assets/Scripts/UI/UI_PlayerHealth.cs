@@ -11,6 +11,7 @@ public class UI_PlayerHealth : MonoBehaviour
     [SerializeField] GameObject[] emptyHealthImage;
     [SerializeField] Slider abilitySlider;
 
+
     private void Start()
     {
         ResetHealthUI();
