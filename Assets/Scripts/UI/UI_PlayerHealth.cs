@@ -10,13 +10,16 @@ public class UI_PlayerHealth : MonoBehaviour
     [SerializeField] GameObject[] healthImage;
     [SerializeField] GameObject[] emptyHealthImage;
     [SerializeField] Slider abilitySlider;
-
+    private Vector2 targetSize;
 
     private void Start()
     {
+        InitializeTargetSize();
+        ScaleImages(); // Scale images on start
         ResetHealthUI();
         SetHealthUI();
     }
+
     public void SetHealthUI()
     {
         //hp1
@@ -80,5 +83,38 @@ public class UI_PlayerHealth : MonoBehaviour
     public void UpdateAbilityBarMax(float max)
     {
         abilitySlider.maxValue = max;
+    }
+
+    private void InitializeTargetSize()
+    {
+        if (healthImage.Length > 0)
+        {
+            RectTransform rectTransform = healthImage[0].GetComponent<RectTransform>();
+            if (rectTransform != null)
+            {
+                targetSize = rectTransform.sizeDelta;
+            }
+        }
+    }
+
+    private void ScaleImages()
+    {
+        foreach (GameObject image in healthImage)
+        {
+            ScaleImage(image);
+        }
+        foreach (GameObject emptyImage in emptyHealthImage)
+        {
+            ScaleImage(emptyImage);
+        }
+    }
+
+    private void ScaleImage(GameObject image)
+    {
+        RectTransform rectTransform = image.GetComponent<RectTransform>();
+        if (rectTransform != null)
+        {
+            rectTransform.sizeDelta = targetSize;
+        }
     }
 }
