@@ -8,7 +8,7 @@ public class AbilityMeterScript : MonoBehaviour
     [SerializeField] private float maxAbilityMeter;
     [SerializeField] private float startingAbilityMeter;
     [SerializeField] private bool abilityReady;
-    [SerializeField] UI_PlayerHealth ui;
+    UI_PlayerHealth uiPlayerHealth;
     private float abilityMeter = 0;
 
     public float MaxAbilityMeter
@@ -17,7 +17,7 @@ public class AbilityMeterScript : MonoBehaviour
         set 
         { 
             maxAbilityMeter = value;
-            ui.UpdateAbilityBarMax(value);
+            uiPlayerHealth.UpdateAbilityBarMax(value);
         }
     }
 
@@ -29,12 +29,12 @@ public class AbilityMeterScript : MonoBehaviour
             if (value > maxAbilityMeter)
             {
                 abilityMeter = MaxAbilityMeter; //nemùže pøekroèit maximum
-                ui.UpdateAbilityBar(MaxAbilityMeter);
+                uiPlayerHealth.UpdateAbilityBar(MaxAbilityMeter);
             }
             else
             {
                 abilityMeter = value;
-                ui.UpdateAbilityBar(value);
+                uiPlayerHealth.UpdateAbilityBar(value);
             }
         }
     }
@@ -46,6 +46,8 @@ public class AbilityMeterScript : MonoBehaviour
 
     private void Start()
     {
+        uiPlayerHealth = FindAnyObjectByType<UI_PlayerHealth>();
+        if (uiPlayerHealth == null) Debug.Log("!WARNING! Script AbilityMeterScript couldnt find the UI_PlayerHealth script");
         AbilityMeter += startingAbilityMeter;
     }
 

@@ -5,8 +5,8 @@ using UnityEngine;
 public class PlayerHealth : MonoBehaviour
 {
     [Header("Scripts")]
-    [SerializeField] UI_PlayerHealth ui_PlayerHealth;
-    [SerializeField] UI_PlayerDeath ui_PlayerDeath;
+    [SerializeField] UI_PlayerHealth uiPlayerHealth;
+    [SerializeField] UI_PlayerDeath uiPlayerDeath;
     Animator animator;
     [Header("Hodnoty")]
     [SerializeField] private float health;
@@ -23,9 +23,9 @@ public class PlayerHealth : MonoBehaviour
             if (value == 0)
             {
                 animator.SetTrigger("death");
-                ui_PlayerDeath.PlayerDeathUI();                
+                uiPlayerDeath.PlayerDeathUI();                
             }
-            ui_PlayerHealth.SetHealthUI();
+            uiPlayerHealth.SetHealthUI();
             if (value > maxHealth) health = maxHealth; //Životy nemùžou pøekroèit maximální životy
             else health = value;
         }
@@ -99,7 +99,11 @@ public class PlayerHealth : MonoBehaviour
     }
     private void Start()
     {
-        animator = GetComponent<Animator>();
+        if (uiPlayerHealth == null) Debug.Log("!WARNING! Script PlayerHealth couldnt get the UI_PlayerHealth script");
+        if (uiPlayerDeath == null) Debug.Log("!WARNING! Script PlayerHealth couldnt get the UI_PlayerDeath script");
+
+        animator = GetComponentInParent<Animator>();
+        if (animator == null) Debug.Log("!WARNING! Animator in script PlayerHealth couldnt find the Animator");
     }
     private void Update()
     {
