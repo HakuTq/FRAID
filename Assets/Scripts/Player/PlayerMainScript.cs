@@ -4,10 +4,24 @@ using UnityEngine;
 
 public class PlayerMainScript : MonoBehaviour
 {
-    [SerializeField] PlayerHealth playerHealth;
+    PlayerHealth playerHealth;
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public bool PlayerTriggerDamage //I mean if it works it works
     {
-        if (collision.tag == "EnemyDamage") playerHealth.PlayerDamage();
+        set 
+        { 
+            if (value == true)
+            {
+                if (playerHealth != null) playerHealth.PlayerDamage();
+                else Debug.Log("!ERROR! Could not load PlayerHealth");
+            }            
+        }
     }
+
+    private void Start()
+    {
+        playerHealth = GetComponent<PlayerHealth>();
+    }
+
+    
 }

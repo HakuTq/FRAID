@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -13,21 +16,21 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float maxHealth;
     [SerializeField] private float invincibilityTime;
     [SerializeField] private float timerInvincibility;
-    [SerializeField] private bool invincible; //nastavuje se pøes metodu
-    [SerializeField] private bool godMode; //nevztahuje se na nìj èasovaè
+    [SerializeField] private bool invincible; 
+    [SerializeField] private bool godMode; //Is not affected by timer (Like invincible)
     public float Health
     {
         get { return health; }
         set 
         {
-            if (value == 0)
+            if (value == 0) //Player Death
             {
-                animator.SetTrigger("death");
+                StartCoroutine(StopPlayingAnimator()); //Animator Plays Death Animation
                 uiPlayerDeath.PlayerDeathUI();                
-            }
-            uiPlayerHealth.SetHealthUI();
-            if (value > maxHealth) health = maxHealth; //Životy nemùžou pøekroèit maximální životy
+            }                      
+            if (value > maxHealth) health = maxHealth; //Current Health cannot be bigger than MaxHealth
             else health = value;
+            uiPlayerHealth.SetHealthUI(); //Set UI
         }
     }
 
@@ -61,7 +64,7 @@ public class PlayerHealth : MonoBehaviour
     /// <param name="damage"></param>
     public void PlayerDamage(bool setInvincibility, float damage)
     {
-        if (!invincible && !godMode) health -= damage;
+        if (!invincible && !godMode) Health -= damage;
         if (setInvincibility) PlayerSetInvincible();
     }
     /// <summary>
@@ -70,7 +73,7 @@ public class PlayerHealth : MonoBehaviour
     /// <param name="setInvincibility"></param>
     public void PlayerDamage(bool setInvincibility)
     {
-        if (!invincible && !godMode) health -= 1;
+        if (!invincible && !godMode) Health -= 1;
         if (setInvincibility) PlayerSetInvincible();
     }
     /// <summary>
@@ -78,8 +81,12 @@ public class PlayerHealth : MonoBehaviour
     /// </summary>
     public void PlayerDamage()
     {
-        if (!invincible && !godMode) health -= 1;
-        PlayerSetInvincible();
+        if (!invincible && !godMode)
+        {
+            Health -= 1;
+            PlayerSetInvincible();
+            Debug.Log("Player Has Taken Damage");
+        }        
     }
 
     public void PlayerMaxHealth()
@@ -95,15 +102,14 @@ public class PlayerHealth : MonoBehaviour
     public void PlayerDeath()
     {
         Health = 0;
-
     }
     private void Start()
     {
-        if (uiPlayerHealth == null) Debug.Log("!WARNING! Script PlayerHealth couldnt get the UI_PlayerHealth script");
-        if (uiPlayerDeath == null) Debug.Log("!WARNING! Script PlayerHealth couldnt get the UI_PlayerDeath script");
-
+        if (uiPlayerHealth == null) Debug.Log("!ERROR! Script PlayerHealth couldnt get the UI_PlayerHealth script");
+        if (uiPlayerDeath == null) Debug.Log("!ERROR! Script PlayerHealth couldnt get the UI_PlayerDeath script");
         animator = GetComponentInParent<Animator>();
-        if (animator == null) Debug.Log("!WARNING! Animator in script PlayerHealth couldnt find the Animator");
+        if (animator == null) Debug.Log("!ERROR! Animator in script PlayerHealth couldnt find the Animator");
+        Health = MaxHealth;
     }
     private void Update()
     {
@@ -116,6 +122,13 @@ public class PlayerHealth : MonoBehaviour
                 timerInvincibility = invincibilityTime;
             }
         }
+    }
+
+    IEnumerator StopPlayingAnimator() //Because what the fuck is a Stop Playing Function
+    {
+        animator.SetTrigger("PlayerDeath");
+        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+        animator.speed = 0;
     }
 
 

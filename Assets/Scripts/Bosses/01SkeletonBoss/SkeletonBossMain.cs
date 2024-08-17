@@ -19,9 +19,9 @@ public class SkeletonBossMain : MonoBehaviour
     Collider2D collider;
     Animator animator;
     SpriteRenderer sprite;
+    GameObject player;
     [SerializeField] Slider healthSlider;
     // SCRIPTS
-    [SerializeField] PlayerMainScript playerMainScript;
     [SerializeField] LevelFadeEffect fadeEffect;
     // Variables
     float health;
@@ -56,6 +56,8 @@ public class SkeletonBossMain : MonoBehaviour
 
     private void Start()
     {
+        player = GameObject.Find("Player");
+        if (player == null) Debug.Log("!ERROR! SkeletonBossMain could not load Player GameObject");
         fadeEffect.FadeIn();
         health = maxHealth;
         rb = GetComponent<Rigidbody2D>();
@@ -82,9 +84,9 @@ public class SkeletonBossMain : MonoBehaviour
                 }
             }
             // Attack and Movement
-            distanceBetweenPlayerAndBoss = Vector2.Distance(transform.position, playerMainScript.transform.position);
-            //Boss AI
+            distanceBetweenPlayerAndBoss = Vector2.Distance(transform.position, player.transform.position);
 
+            //Boss AI
             if (AnimatorIsPlaying("Point") || AnimatorIsPlaying("Attack")) bossCanWalk = false;
             else bossCanWalk = true;
             //Debug.Log("BossCanWalk: " + bossCanWalk);
@@ -92,7 +94,7 @@ public class SkeletonBossMain : MonoBehaviour
             {
                 if (readyToAttack && distanceBetweenPlayerAndBoss <= distanceToAttack) BossMelleAttack();
                 else if (distanceBetweenPlayerAndBoss <= distanceToIdle) BossStateIdle();
-                else if (playerMainScript.transform.position.x < transform.position.x) BossStateWalkLeft();
+                else if (player.transform.position.x < transform.position.x) BossStateWalkLeft();
                 else BossStateWalkRight();
             }
             else rb.velocity = Vector2.zero;
