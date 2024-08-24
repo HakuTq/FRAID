@@ -7563,9 +7563,13 @@ MonoBehaviour:
   audioMixer: {fileID: 24100000, guid: 258e460c3dcc3f3448575de6a999842d, type: 2}
   musicVolSlider: {fileID: 125087794}
   SFXVolSlider: {fileID: 1541159513}
+  displayMenu: {fileID: 0}
+  soundsMenu: {fileID: 0}
   resolutionDropdown: {fileID: 1786891108}
   src: {fileID: 0}
   srcOne: {fileID: 8300000, guid: 7581b64b70545c54783656d4aefd1777, type: 3}
+  displayMenuOpen: 1
+  soundsMenuOpen: 0
 --- !u!225 &2018423711
 CanvasGroup:
   m_ObjectHideFlags: 0

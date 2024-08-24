@@ -11,12 +11,17 @@ public class Settings : MonoBehaviour
     [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private Slider musicVolSlider;
     [SerializeField] private Slider SFXVolSlider;
+    [SerializeField] private GameObject displayMenu;
+    [SerializeField] private GameObject soundsMenu;
     ConfigSystem config;
 
     public TMPro.TMP_Dropdown resolutionDropdown;
 
     public AudioSource src;
     public AudioClip srcOne;
+
+    public bool displayMenuOpen = true;
+    public bool soundsMenuOpen = false;
 
     Resolution[] resolutions;
 
@@ -91,5 +96,27 @@ public class Settings : MonoBehaviour
     public void SetFullscreen(bool isFullscreen)
     {
         Screen.fullScreen = isFullscreen;
+    }
+
+    public void OpenSoundsMenu()
+    {
+        if (!soundsMenuOpen)
+        {
+            displayMenuOpen = false;
+            soundsMenuOpen = true;
+            soundsMenu.SetActive(true);
+            displayMenu.SetActive(false);
+        }
+    }
+
+    public void OpenDisplayMenu()
+    {
+        if (!displayMenuOpen)
+        {
+            displayMenuOpen = true;
+            soundsMenuOpen = false;
+            soundsMenu.SetActive(false);
+            displayMenu.SetActive(true);
+        }
     }
 }
