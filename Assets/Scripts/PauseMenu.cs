@@ -103,13 +103,14 @@ public class PauseMenu : MonoBehaviour
     public void MMenu()
     {
         src.PlayOneShot(srcOne);
-        StartCoroutine(_MMenu());
+        _MMenu();
     }
 
 
-    private IEnumerator _MMenu()
+    private void _MMenu()
     {
-        yield return new WaitForSeconds(0.01f);
+        Debug.Log("Returning to main menu");
+        //yield return new WaitForSeconds(0.01f);
         SceneManager.LoadScene("MainMenu");
     }
 }

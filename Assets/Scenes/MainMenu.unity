@@ -2922,6 +2922,7 @@ MonoBehaviour:
   saveMenu: {fileID: 755210482}
   src: {fileID: 387368122}
   click: {fileID: 8300000, guid: 7581b64b70545c54783656d4aefd1777, type: 3}
+  new_game_click: {fileID: 8300000, guid: 1f95d4c26f5ae544d9d9d684b11ec95b, type: 3}
   panel: {fileID: 1920149066}
   newGameButton: {fileID: 1406097037}
   continueButton: {fileID: 485603288}

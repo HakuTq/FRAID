@@ -17,6 +17,7 @@ public class MainMenu : MonoBehaviour
 
     public AudioSource src;
     public AudioClip click;
+    public AudioClip new_game_click;
 
     public GameObject panel;
 
@@ -73,7 +74,7 @@ public class MainMenu : MonoBehaviour
 
     public void NewGame()
     {
-        src.PlayOneShot(click);
+        src.PlayOneShot(new_game_click);
         SceneManager.LoadScene("Level_1_Boss");
     }
 
