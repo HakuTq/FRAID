@@ -11,6 +11,7 @@ public class PlayerMovementScript : MonoBehaviour
     private bool shouldMove;
     private bool shouldJump;
     private bool shouldDash;
+    private bool shouldAttack;
     [SerializeField] private PlayerInput playerInput = null;
 
     //********** PUBLIC **********
@@ -19,6 +20,7 @@ public class PlayerMovementScript : MonoBehaviour
     public bool ShouldMove { get { return shouldMove;} }
     public bool ShouldJump { get { return shouldJump;} }
     public bool ShouldDash { get { return shouldDash; } set { shouldDash = value; } }
+    public bool ShouldAttack { get { return shouldAttack; } }
     public PlayerInput PlayerInput => playerInput;
 
     // Awake is called when the script instance is being loaded
@@ -82,6 +84,18 @@ public class PlayerMovementScript : MonoBehaviour
         if (context.started)
         {
             shouldDash = true;
+        }
+    }
+    // Called when the "Attack" action is triggered
+    public void Attack(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            shouldAttack = true;
+        }
+        if (context.canceled)
+        {
+            shouldAttack = false;
         }
     }
 }

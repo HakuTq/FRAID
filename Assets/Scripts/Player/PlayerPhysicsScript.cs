@@ -102,6 +102,7 @@ public class PlayerPhysicsScript : MonoBehaviour
 
     private void Update()
     {
+        animator.SetBool("PlayerAttack", movementScript.ShouldAttack);
         animator.SetBool("ShouldJump", movementScript.ShouldJump);
         animator.SetBool("ShouldMove", movementScript.ShouldMove);
         animator.SetBool("IsTouchingGround", IsTouchingGroundDown);

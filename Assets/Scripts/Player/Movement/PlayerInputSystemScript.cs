@@ -62,6 +62,15 @@ public partial class @PlayerMovement: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Attack"",
+                    ""type"": ""Button"",
+                    ""id"": ""50701be8-a15f-4e3e-82e6-3cdae59fe63e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -108,6 +117,17 @@ public partial class @PlayerMovement: IInputActionCollection2, IDisposable
                     ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b7b5e97f-0704-4c00-9f42-1c77196c2293"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -126,6 +146,7 @@ public partial class @PlayerMovement: IInputActionCollection2, IDisposable
         m_Movement_Right = m_Movement.FindAction("Right", throwIfNotFound: true);
         m_Movement_Jump = m_Movement.FindAction("Jump", throwIfNotFound: true);
         m_Movement_Dash = m_Movement.FindAction("Dash", throwIfNotFound: true);
+        m_Movement_Attack = m_Movement.FindAction("Attack", throwIfNotFound: true);
         // Menu
         m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
     }
@@ -193,6 +214,7 @@ public partial class @PlayerMovement: IInputActionCollection2, IDisposable
     private readonly InputAction m_Movement_Right;
     private readonly InputAction m_Movement_Jump;
     private readonly InputAction m_Movement_Dash;
+    private readonly InputAction m_Movement_Attack;
     public struct MovementActions
     {
         private @PlayerMovement m_Wrapper;
@@ -201,6 +223,7 @@ public partial class @PlayerMovement: IInputActionCollection2, IDisposable
         public InputAction @Right => m_Wrapper.m_Movement_Right;
         public InputAction @Jump => m_Wrapper.m_Movement_Jump;
         public InputAction @Dash => m_Wrapper.m_Movement_Dash;
+        public InputAction @Attack => m_Wrapper.m_Movement_Attack;
         public InputActionMap Get() { return m_Wrapper.m_Movement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -222,6 +245,9 @@ public partial class @PlayerMovement: IInputActionCollection2, IDisposable
             @Dash.started += instance.OnDash;
             @Dash.performed += instance.OnDash;
             @Dash.canceled += instance.OnDash;
+            @Attack.started += instance.OnAttack;
+            @Attack.performed += instance.OnAttack;
+            @Attack.canceled += instance.OnAttack;
         }
 
         private void UnregisterCallbacks(IMovementActions instance)
@@ -238,6 +264,9 @@ public partial class @PlayerMovement: IInputActionCollection2, IDisposable
             @Dash.started -= instance.OnDash;
             @Dash.performed -= instance.OnDash;
             @Dash.canceled -= instance.OnDash;
+            @Attack.started -= instance.OnAttack;
+            @Attack.performed -= instance.OnAttack;
+            @Attack.canceled -= instance.OnAttack;
         }
 
         public void RemoveCallbacks(IMovementActions instance)
@@ -299,6 +328,7 @@ public partial class @PlayerMovement: IInputActionCollection2, IDisposable
         void OnRight(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
+        void OnAttack(InputAction.CallbackContext context);
     }
     public interface IMenuActions
     {
